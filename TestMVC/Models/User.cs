@@ -9,6 +9,7 @@ namespace TestMVC.Models
 {
     public class User : IKeyID
     {
+
         [Key]
         public int ID { get; set; }
 
