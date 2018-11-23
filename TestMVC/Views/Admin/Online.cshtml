@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Online";
+    var F = @Html.F();
+}
+
+@model IEnumerable<TestMVC.Models.Online>
+
+@{
+    var PagingInfo = ViewBag.PagingInfo as TestMVC.Models.PagingInfoViewModel;
+}
+
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").BodyPadding(5).ShowBorder(false).Layout(LayoutType.VBox).ShowHeader(false).Title("日志管理").IsViewPort(true)
+        .Items(
+            F.Form().ID("Form2").ShowHeader(false).ShowBorder(false)
+                .Rows(
+                    F.FormRow().ID("FormRow1")
+                        .Items(
+                            F.TwinTriggerBox().ID("ttbSearchMessage").ShowLabel(false).EmptyText("在用户名中搜索").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).OnTrigger2Click(Url.Action("Online_DoPostBack"), "Panel1", new Parameter("actionType", "trigger2", ParameterMode.String)).OnTrigger1Click(Url.Action("Online_DoPostBack"), "Panel1", new Parameter("actionType", "trigger1", ParameterMode.String)),
+                            F.Label()
+                        )
+                ),
+            F.Grid().ID("Grid1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(false).DataIDField("ID").AllowSorting(true).OnSort(Url.Action("Online_DoPostBack"), "Panel1").AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Online_DoPostBack"), "Panel1")
+                .Columns(
+                    F.RowNumberField().EnablePagingNumber(true),
+                    F.RenderFieldFor(m => m.UpdateTime, true).FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd HH:mm").Width(150),
+                    F.RenderFieldFor(m => m.LoginTime, true).Width(150).FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd HH:mm"),
+                    F.RenderFieldFor(m => m.User.Name, true).Width(100),
+                    F.RenderFieldFor(m => m.User.ChineseName, true).Width(100),
+                    F.RenderFieldFor(m => m.IPAdddress).ExpandUnusedSpace(true),
+                     F.RenderField().HeaderText("").EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderAction1").Width(50)
+                )
+                .PageItems(
+                    F.ToolbarSeparator().ID("ToolbarSeparator3"),
+                    F.ToolbarText().ID("ToolbarText1").Text("每页记录数："),
+                    F.DropDownList().ID("ddlGridPageSize").Width(80).OnSelectedIndexChanged(Url.Action("Online_DoPostBack"), "Panel1")
+                        .SelectedValue(PagingInfo.PageSize.ToString())
+                        .Items(
+                            F.ListItem().Text("10").Value("10"),
+                            F.ListItem().Text("20").Value("20"),
+                            F.ListItem().Text("50").Value("50"),
+                            F.ListItem().Text("100").Value("100")
+                        )
+                ).SortField(PagingInfo.SortField).SortDirection(PagingInfo.SortDirection).PageSize(PagingInfo.PageSize).RecordCount(PagingInfo.RecordCount).DataSource(Model)
+            )
+    )
+
+    @(F.Window().ID("Window1").IsModal(true).Hidden(true).Target(Target.Top).EnableResize(true).EnableMaximize(true).EnableIFrame(true).Width(900).Height(550))
+
+}
+
+
+@section script {
+
+    <script>
+
+        function renderAction1(value, params) {
+            return '<a class="action-btn viewonline" href="javascript:;">查看</a>';
+        }
+
+
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+            grid1.el.on('click', 'a.action-btn.viewonline', function (event) {
+                var cnode = $(this);
+                var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+
+                F.ui.Window1.show('@Url.Content("~/Admin/UserView?id=")' + rowData.id, "查看用户信息");
+            });
+
+        });
+
+    </script>
+}

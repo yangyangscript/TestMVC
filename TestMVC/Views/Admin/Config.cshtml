@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Config";
+    var F = @Html.F();
+}
+
+@using TestMVC.Models
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowHeader(false).ShowBorder(false).AutoScroll(true).Width(600)
+        .Items(
+            F.SimpleForm().ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Top).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    //F.TextBox().ID("tbxTitle").Label("网站标题").MaxLength(100).Required(true).ShowRedStar(true).Text(ConfigHelper.Title),
+                    //F.NumberBox().ID("nbxPageSize").Label("表格默认记录数").Required(true).ShowRedStar(true)
+                    //    .Text(ConfigHelper.PageSize.ToString()),
+                    F.DropDownList().ID("ddlPageSize").Label("表格默认记录数").Required(true).ShowRedStar(true)
+                        .Items(
+                            F.ListItem().Text("10").Value("10"),
+                            F.ListItem().Text("20").Value("20"),
+                            F.ListItem().Text("50").Value("50"),
+                            F.ListItem().Text("100").Value("100")
+                        ).SelectedValue(ConfigHelper.PageSize.ToString()),
+                    F.TextArea().ID("tbxHelpList").Height(320).Label("帮助下拉列表").Required(true).ShowRedStar(true).Text(ViewBag.HelpListText),
+                    F.Button().ID("btnSave").Icon(Icon.SystemSave).OnClick(Url.Action("Config_btnSave_OnClick"), "SimpleForm1").ValidateForms("SimpleForm1").ValidateTarget(Target.Top).Text("保存设置").Enabled(ViewBag.CoreConfigEdit)
+                )
+        )
+    )
+
+}
+

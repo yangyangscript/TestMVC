@@ -1,0 +1,190 @@
+﻿@{
+    ViewBag.Title = "RolePower";
+    var F = @Html.F();
+}
+
+@model IEnumerable<TestMVC.Models.GroupPowerViewModel>
+
+@{
+    var Grid1PagingInfo = ViewBag.Grid1PagingInfo as TestMVC.Models.PagingInfoViewModel;
+    var Grid2PagingInfo = ViewBag.Grid2PagingInfo as TestMVC.Models.PagingInfoViewModel;
+}
+
+
+@section head {
+
+    <style>
+        ul.powers {
+            margin: 0;
+            padding: 0;
+        }
+
+            ul.powers li {
+                margin: 5px 15px 5px 0;
+                display: inline-block;
+                min-width: 150px;
+            }
+
+                ul.powers li input {
+                    vertical-align: middle;
+                }
+
+                ul.powers li label {
+                    margin-left: 5px;
+                }
+
+        /* 自动换行，放置权限列表过长 */
+        .f-grid-row .f-grid-cell-inner {
+            white-space: normal;
+        }
+
+        .f-grid-cell.hidethis .f-grid-checkbox {
+            display: none;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.RegionPanel().ID("RegionPanel1").ShowBorder(false).IsViewPort(true)
+          .Regions(
+              F.Region().ID("Region1").ShowBorder(false).ShowHeader(false).Width(200).RegionPosition(Position.Left).Layout(LayoutType.Fit).BodyPadding(5)
+                  .Items(
+                      F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(false).DataIDField("ID").DataTextField("Name").AllowSorting(true).ClearSelectionBeforeSorting(false).OnSort(Url.Action("RolePower_Grid1_Sort"), "Grid1").EnableMultiSelect(false).Listener("rowclick", "RolePower_Grid2_DoPostBack();")
+                          .Columns(
+                              F.RowNumberField(),
+                              F.RenderField().DataField("Name").SortField("Name").ExpandUnusedSpace(true).HeaderText("角色名称")
+                          ).SortField(Grid1PagingInfo.SortField).SortDirection(Grid1PagingInfo.SortDirection).SelectedRowID(ViewBag.Grid1SelectedRowID).DataSource(ViewBag.Grid1DataSource)
+
+                  ),
+              F.Region().ID("Region2").ShowBorder(false).ShowHeader(false).RegionPosition(Position.Center).Layout(LayoutType.VBox).BodyPadding("5px 5px 5px 0")
+                  .Items(
+                      F.Grid().ID("Grid2").BoxFlex(1).ShowBorder(true).ShowHeader(false).AllowSorting(true).Listener("sorting", "RolePower_Grid2_DoPostBack();")
+                          .Toolbars(
+                              F.Toolbar().ID("Toolbar1")
+                                  .Items(
+                                      F.Button().ID("btnSelectAll").Text("全选").Listener("click", "selectPowerCheckboxs(true);"),
+                                      F.Button().ID("btnUnSelectAll").Text("反选").Listener("click", "selectPowerCheckboxs(false);"),
+                                      F.ToolbarSeparator(),
+                                      F.Button().ID("btnGroupUpdate").Icon(Icon.GroupEdit).Text("更新当前角色的权限").Enabled(ViewBag.CoreRolePowerEdit).Listener("click", "RolePower_Grid2_DoPostBack('saveall');")
+                                  )
+                          )
+                          .Columns(
+                              F.RowNumberField().EnablePagingNumber(true),
+                              F.RenderFieldFor(m => m.GroupName, true).Width(120),
+                              F.RenderField().HeaderText("测试勾选").ColumnID("testcheck").RendererFunction("checkFun").Width(100).TextAlign(TextAlign.Center),
+                              F.RenderFieldFor(m => m.Powers).ExpandUnusedSpace(true).RendererFunction("renderPowers")
+                          ).SortField(Grid2PagingInfo.SortField).SortDirection(Grid2PagingInfo.SortDirection).DataSource(Model)
+                          .Listener("beforerowcontextmenu", "onGrid2Contextmenu")
+                  )
+          ))
+
+    @(F.Menu().ID("Menu2")
+        .Items(
+            F.MenuButton().ID("menuSelectRows").Text("全选行").Listener("click", "selectPowerCheckboxs(true);"),
+            F.MenuButton().ID("menuUnselectRows").Text("取消行").Listener("click", "selectPowerCheckboxs(false);")
+        )
+    )
+}
+
+
+@section script {
+
+    <script>
+
+        var checkboxSelector = '.powers input[type=checkbox]',
+            selectedRowSelector = '.f-grid-row-selected',
+            selectedRowCheckboxSelector = selectedRowSelector + ' ' + checkboxSelector;
+
+
+        function checkFun(value, params) {
+            var entranceYear = params.rowData.values['GroupName'];           
+            if (entranceYear.indexOf('User')>0) {
+                params.tdCls = 'hidethis';
+            }
+            var checkedHtml = value ? ' f-checked' : '';
+            return '<i class="f-grid-checkbox f-iconfont f-checkbox f-icon ' + checkedHtml + '"></i>';
+        }
+
+        function onGrid2Contextmenu(event, rowId, rowIndex) {
+            F.ui.Menu2.show();
+            return false;
+        }
+
+        function renderPowers(value, params) {
+            var html = ['<ul class="powers">'];
+            $.each(value, function (index, item) {
+                var itemId = 'power_checkbox_' + item.id;
+                var itemHtml = F.formatString('<li><span data-qtip="{0}">', item.name);
+                itemHtml += F.formatString('<input id="{0}" type="checkbox" value="{1}">', itemId, item.id);
+                itemHtml += F.formatString('<label for="{0}">{1}</label>', itemId, item.title);
+                itemHtml += '</span></li>';
+                html.push(itemHtml);
+            });
+            html.push('</ul>');
+            return html.join('');
+        }
+
+        function getAllCheckboxEls() {
+            return F.ui.Grid2.el.find(checkboxSelector);
+        }
+
+        function selectPowerCheckboxs(checked) {
+            var selectedRows = F.ui.Grid2.el.find(selectedRowSelector);
+            if (selectedRows.length) {
+                F.ui.Grid2.el.find(selectedRowCheckboxSelector).prop('checked', checked);
+            } else {
+                F.ui.Grid2.el.find(checkboxSelector).prop('checked', checked);
+            }
+        }
+
+
+        function updateRolePowers(powerIds) {
+            getAllCheckboxEls().each(function () {
+                var checkboxEl = $(this), checkboxValue = parseInt(checkboxEl.val(), 10);
+                if ($.inArray(checkboxValue, powerIds) >= 0) {
+                    checkboxEl.prop('checked', true);
+                } else {
+                    checkboxEl.prop('checked', false);
+                }
+            });
+        }
+
+
+        function RolePower_Grid2_DoPostBack(actionType) {
+            var params = {
+                selectedRoleID: F.ui.Grid1.getSelectedRow()
+            };
+
+            // 加入扩展参数
+            if (actionType) {
+                params.actionType = actionType;
+            }
+
+            // saveall
+            if (actionType === 'saveall') {
+                var selectedPowerIDs = [];
+                getAllCheckboxEls().each(function () {
+                    var checkboxEl = $(this), checkboxValue = parseInt(checkboxEl.val(), 10);
+                    if (checkboxEl.prop('checked')) {
+                        selectedPowerIDs.push(checkboxValue);
+                    }
+                });
+                params.selectedPowerIDs = selectedPowerIDs;
+            }
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("RolePower_Grid2_DoPostBack")', 'Region2', params);
+        }
+
+        F.ready(function () {
+
+            updateRolePowers(@ViewBag.RolePowerIds);
+            F.ui.Grid2.el.on('click', '.f-grid-cell-testcheck .f-grid-checkbox', function () {
+                $(this).toggleClass('f-checked');
+            });
+        });
+
+    </script>
+}

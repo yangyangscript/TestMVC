@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Dept";
+    var F = @Html.F();
+}
+
+@model IEnumerable<TestMVC.Models.Dept>
+
+@{
+    var PagingInfo = ViewBag.PagingInfo as TestMVC.Models.PagingInfoViewModel;
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").BodyPadding(5).ShowBorder(false).Layout(LayoutType.VBox).ShowHeader(false).Title("部门管理").IsViewPort(true)
+        .Items(
+            F.Grid().ID("Grid1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(false).DataIDField("ID").DataTextField("Name").EnableSimulateTree(true)
+                .Columns(
+                    F.RowNumberField().EnablePagingNumber(true),
+                    F.RenderFieldFor(m => m.Name, true).DataSimulateTreeLevelField("TreeLevel").Width(180),
+                    F.RenderFieldFor(m => m.Remark, true).ExpandUnusedSpace(true),
+                    F.RenderFieldFor(m => m.SortIndex).Width(80),
+                    F.RenderField().HeaderText("").EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderActionEdit").Width(50),
+                    F.RenderField().HeaderText("").EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderActionDelete").Width(50)
+                )
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar1").Position(ToolbarPosition.Top)
+                        .Items(
+                            F.ToolbarFill(),
+                            F.Button().ID("btnNew").Icon(Icon.Add).Text("新增部门").Listener("click", "onNewClick").Enabled(ViewBag.CoreDeptNew)
+                        )
+                ).DataSource(Model)
+            )
+    )
+
+    @(F.Window().ID("Window1").IsModal(true).Hidden(true).Target(Target.Top).EnableResize(true).EnableMaximize(true).EnableIFrame(true).Width(900).Height(550).OnClose(Url.Action("Dept_DoPostBack"), "Panel1"))
+
+}
+
+
+@section script {
+
+    <script>
+
+        var coreDeptEdit = @Convert.ToString(ViewBag.CoreDeptEdit).ToLower();
+        var coreDeptDelete = @Convert.ToString(ViewBag.CoreDeptDelete).ToLower();
+
+        function onNewClick(event) {
+            F.ui.Window1.show('@Url.Content("~/Admin/DeptNew")', '新增');
+        }
+
+        function renderActionEdit(value, params) {
+            var imageUrl = '@Url.Content("~/res/icon/pencil.png")';
+            var disabledCls = coreDeptEdit ? '' : ' f-state-disabled';
+            return '<a class="action-btn edit'+ disabledCls +'" href="javascript:;"><img class="f-grid-cell-icon" src="' + imageUrl + '"></a>';
+        }
+
+        function renderActionDelete(value, params) {
+            var imageUrl = '@Url.Content("~/res/icon/delete.png")';
+            var disabledCls = coreDeptDelete ? '' : ' f-state-disabled';
+            return '<a class="action-btn delete'+ disabledCls +'" href="javascript:;"><img class="f-grid-cell-icon" src="' + imageUrl + '"></a>';
+        }
+
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+            grid1.el.on('click', 'a.action-btn', function (event) {
+                var cnode = $(this);
+                var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+
+                // 是否禁用
+                if(cnode.hasClass('f-state-disabled')) {
+                    return;
+                }
+
+                if (cnode.hasClass('delete')) {
+                    F.confirm({
+                        message: '确定删除此记录？',
+                        target: '_top',
+                        ok: function () {
+                            // 触发后台事件
+                            F.doPostBack('@Url.Action("Dept_DoPostBack")', 'Panel1', {
+                                actionType: 'delete',
+                                deletedRowID: rowData.id
+                            });
+                        }
+                    });
+                } else if (cnode.hasClass('edit')) {
+                    F.ui.Window1.show('@Url.Content("~/Admin/DeptEdit?id=")' + rowData.id, '编辑');
+                }
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.User = "UserEdit";
+    var F = @Html.F();
+}
+
+@model TestMVC.Models.User
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).AutoScroll(true).IsViewPort(true).Layout(LayoutType.VBox)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnClose").Icon(Icon.SystemClose).Text("关闭").Listener("click", "F.activeWindow.hide();"),
+                    F.ToolbarSeparator(),
+                    F.Button().ID("btnSaveClose").ValidateForms("SimpleForm1").Icon(Icon.SystemSaveClose).OnClick(Url.Action("UserEdit_btnSaveClose_Click"), "SimpleForm1").Text("保存后关闭")
+                )
+        )
+        .Items(
+            F.Form().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).BodyPadding(10)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.HiddenFieldFor(m => m.ID),
+                            F.LabelFor(m => m.Name),
+                            F.TextBoxFor(m => m.ChineseName)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.RadioButtonListFor(m => m.Gender)
+                                .Items(
+                                    F.RadioItem().Text("男").Value("男"),
+                                    F.RadioItem().Text("女").Value("女")
+                                ),
+                            F.CheckBoxFor(m => m.Enabled)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBoxFor(m => m.Email).RegexPattern(RegexPattern.EMAIL),
+                            F.TextBoxFor(m => m.CompanyEmail).RegexPattern(RegexPattern.EMAIL)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBoxFor(m => m.OfficePhone),
+                            F.TextBoxFor(m => m.OfficePhoneExt)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBoxFor(m => m.HomePhone),
+                            F.TextBoxFor(m => m.CellPhone)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TwinTriggerBox().ID("tbSelectedRole").EnableEdit(false).Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).ShowTrigger2(true)
+                                .OnClientTrigger1Click("onSelectedRoleTrigger1Click();")
+                                .OnClientTrigger2Click("onSelectedRoleTrigger2Click();").Label("所属角色").Text(ViewBag.SelectedRoleNames),
+                            F.HiddenField().ID("hfSelectedRole").Text(ViewBag.SelectedRoleIDs)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TwinTriggerBox().ID("tbSelectedDept").EnableEdit(false).Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).ShowTrigger2(true)
+                                .OnClientTrigger1Click("onSelectedDeptTrigger1Click();")
+                                .OnClientTrigger2Click("onSelectedDeptTrigger2Click();").Label("所属部门").Text(ViewBag.SelectedDeptName),
+                            F.HiddenField().ID("hfSelectedDept").Text(ViewBag.SelectedDeptID)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TwinTriggerBox().ID("tbSelectedTitle").EnableEdit(false).Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).ShowTrigger2(true)
+                                .OnClientTrigger1Click("onSelectedTitleTrigger1Click();")
+                                .OnClientTrigger2Click("onSelectedTitleTrigger2Click();").Label("拥有职称").Text(ViewBag.SelectedTitleNames),
+                            F.HiddenField().ID("hfSelectedTitle").Text(ViewBag.SelectedTitleIDs)
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextAreaFor(m => m.Remark)
+                        )
+                )
+        )
+    )
+
+
+    @(F.Window().ID("Window1").Title("编辑").Hidden(true).EnableIFrame(true).EnableMaximize(true).EnableResize(true).Target(Target.Top).IsModal(true).Width(550).Height(350))
+
+}
+
+
+@section script {
+
+    <script>
+
+        /////////////////////////////////////////////////////
+        function checkSelectedRoleTriggerStatus() {
+            if (F.ui.tbSelectedRole.getValue()) {
+                F.ui.tbSelectedRole.showTrigger1();
+            } else {
+                F.ui.tbSelectedRole.hideTrigger1();
+            }
+        }
+
+        function onSelectedRoleTrigger1Click() {
+            F.ui.tbSelectedRole.setValue('');
+            F.ui.hfSelectedRole.setValue('');
+            checkSelectedRoleTriggerStatus();
+        }
+
+        function onSelectedRoleTrigger2Click() {
+            F.ui.Window1.show(F.baseUrl + 'Admin/UserSelectRole?ids=' + F.ui.hfSelectedRole.getValue(), '选择用户所属的角色');
+        }
+
+        function updateSelectedRole(roleNames, roleIDs) {
+            F.ui.tbSelectedRole.setValue(roleNames);
+            F.ui.hfSelectedRole.setValue(roleIDs);
+            checkSelectedRoleTriggerStatus();
+        }
+        /////////////////////////////////////////////////////
+
+
+        /////////////////////////////////////////////////////
+        function checkSelectedDeptTriggerStatus() {
+            if (F.ui.tbSelectedDept.getValue()) {
+                F.ui.tbSelectedDept.showTrigger1();
+            } else {
+                F.ui.tbSelectedDept.hideTrigger1();
+            }
+        }
+
+        function onSelectedDeptTrigger1Click() {
+            F.ui.tbSelectedDept.setValue('');
+            F.ui.hfSelectedDept.setValue('');
+            checkSelectedDeptTriggerStatus();
+        }
+
+        function onSelectedDeptTrigger2Click() {
+            F.ui.Window1.show(F.baseUrl + 'admin/UserSelectDept?ids=' + F.ui.hfSelectedDept.getValue(), '选择用户所属的部门');
+        }
+
+        function updateSelectedDept(deptName, deptID) {
+            F.ui.tbSelectedDept.setValue(deptName);
+            F.ui.hfSelectedDept.setValue(deptID);
+            checkSelectedDeptTriggerStatus();
+        }
+        /////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////
+        function checkSelectedTitleTriggerStatus() {
+            if (F.ui.tbSelectedTitle.getValue()) {
+                F.ui.tbSelectedTitle.showTrigger1();
+            } else {
+                F.ui.tbSelectedTitle.hideTrigger1();
+            }
+        }
+
+        function onSelectedTitleTrigger1Click() {
+            F.ui.tbSelectedTitle.setValue('');
+            F.ui.hfSelectedTitle.setValue('');
+            checkSelectedTitleTriggerStatus();
+        }
+
+        function onSelectedTitleTrigger2Click() {
+            F.ui.Window1.show(F.baseUrl + 'admin/UserSelectTitle?ids=' + F.ui.hfSelectedTitle.getValue(), '选择用户拥有的职称');
+        }
+
+        function updateSelectedTitle(titleNames, titleIDs) {
+            F.ui.tbSelectedTitle.setValue(titleNames);
+            F.ui.hfSelectedTitle.setValue(titleIDs);
+            checkSelectedTitleTriggerStatus();
+        }
+        /////////////////////////////////////////////////////
+
+        F.ready(function () {
+            checkSelectedRoleTriggerStatus();
+            checkSelectedDeptTriggerStatus();
+            checkSelectedTitleTriggerStatus();
+        });
+
+    </script>
+
+}

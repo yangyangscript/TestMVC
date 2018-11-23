@@ -1,0 +1,80 @@
+﻿@{   
+    var F = @Html.F();
+    var tbxWith = 250;
+}
+
+
+@section head {
+    <style>     
+        .login-image img {
+            width: 180px;
+            height: 300px;
+            padding: 10px;
+        }
+    </style>
+
+}
+
+
+@section body {
+       
+    @(F.Panel().IsViewPort(true).ShowBorder(false).ShowHeader(false).AutoScroll(true).Layout(LayoutType.VBox)
+          .Toolbars(
+              F.Toolbar().ID("Toolbar1")
+                  .Items(
+                      F.Button().ID("btnClose").Icon(Icon.SystemClose).Text("关闭").Listener("click", "F.activeWindow.hide();"),
+                      F.ToolbarSeparator(),
+                      F.Button().ID("btnSaveClose").ValidateForms("SimpleForm1").Icon(Icon.SystemSaveClose).Text("保存后关闭")
+                  ))
+          .Items(
+            F.Panel().BoxFlex(1).ShowBorder(true).ShowHeader(false).BoxConfigPosition(BoxLayoutPosition.Start).BoxConfigAlign(BoxLayoutAlign.Stretch).Layout(LayoutType.HBox).AutoScroll(true)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar1")
+                        .Items(                          
+                            F.Button().ID("btnUploadFir").Icon(Icon.PictureAdd).Text("选择第一个照片")
+                        )).Items(
+                            F.Image().ID("pictureFir").CssClass("login-image"),
+                            F.SimpleForm().BoxFlex(1).BodyPadding("20px 20px").ShowHeader(false).ShowHeader(false).Items(
+                                     F.TextBox().Label("属性一").Text("属性一").Width(tbxWith),
+                                F.TextBox().Label("属性二").Text("属性二").Width(tbxWith),
+                                F.TextBox().Label("属性三").Text("属性三").Width(tbxWith),
+                                F.TextBox().Label("属性四").Text("属性四").Width(tbxWith),
+                                F.TextBox().Label("属性五").Text("属性五").Width(tbxWith),
+                                F.TextBox().Label("属性六").Text("属性六").Width(tbxWith),
+                                F.TextBox().Label("属性七").Text("属性七").Width(tbxWith)
+                                )
+                            ),
+            F.Panel().BoxFlex(1).ShowBorder(true).ShowHeader(false).BoxConfigPosition(BoxLayoutPosition.Start).BoxConfigAlign(BoxLayoutAlign.Stretch).Layout(LayoutType.HBox)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar1")
+                        .Items(                          
+                            F.Button().ID("btnUploadFir").Icon(Icon.PictureAdd).Text("选择第二个照片")
+                        ))
+                .Items(
+                    F.Image().ID("pictureSec").CssClass("login-image"),
+                    F.SimpleForm().BodyPadding("20px 20px").ShowHeader(false).ShowHeader(false).Items(
+                        F.TextBox().Label("属性二").Text("属性二").Width(tbxWith),
+                        F.TextBox().Label("属性三").Text("属性三").Width(tbxWith),
+                        F.TextBox().Label("属性四").Text("属性四").Width(tbxWith),
+                        F.TextBox().Label("属性五").Text("属性五").Width(tbxWith),
+                        F.TextBox().Label("属性六").Text("属性六").Width(tbxWith),
+                        F.TextBox().Label("属性七").Text("属性七").Width(tbxWith)
+                        ))
+          )
+          )
+    @(F.HiddenField().ID("hfPict1").Text(ViewBag.pict1Code))
+}           
+
+@section script
+{
+    <script>            
+        F.ready(function () {
+            F.ui.pictureFir.setAttribute("src", F.ui.hfPict1.getValue());
+            F.ui.pictureSec.setAttribute("src", F.ui.hfPict1.getValue());
+        });
+
+    </script>
+
+}
+
+

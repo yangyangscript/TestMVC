@@ -1,0 +1,31 @@
+﻿@{
+    var F = Html.F();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TestMVC - 通用权限管理系统</title>
+
+    @F.RenderCss()
+    <link href="~/res/css/common.css" rel="stylesheet" type="text/css" />
+    @RenderSection("head", false)
+
+</head>
+<body>
+    @Html.AntiForgeryToken()
+
+    @{
+        var pm = F.PageManager;
+        pm.CustomTheme(String.Empty);
+        pm.Theme(Theme.Start);      
+    }
+    @F.PageManager
+
+    @RenderSection("body", true)
+
+    @F.RenderScript()
+    @RenderSection("script", false)
+
+</body>
+</html>

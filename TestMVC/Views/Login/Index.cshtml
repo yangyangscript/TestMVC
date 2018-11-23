@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "登录";
+    var F = @Html.F();
+}
+
+
+@section head {
+
+    <script>
+
+        // 本页面一定是顶层窗口，不会嵌在IFrame中
+        if (top.window != window) {
+            top.window.location.href = "./Login";
+        }
+
+    </script>
+
+    <style>
+        .login-image {
+            background-color: #efefef;
+            border-right: solid 1px #ddd;
+            margin-bottom: 0 !important;
+        }
+
+            .login-image img {
+                width: 160px;
+                height: 160px;
+                padding: 10px;
+            }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").IsModal(true).Hidden(false).EnableClose(false).EnableMaximize(false).WindowPosition(WindowPosition.GoldenSection).Icon(Icon.Key).Title(ViewBag.Window1Title).Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Width(500)
+        .Items(
+            F.Image().ID("imageLogin").ImageUrl(Url.Content("~/res/images/login/login_2.png")).CssClass("login-image"),
+            F.SimpleForm().ID("SimpleForm1").LabelAlign(LabelAlign.Top).BoxFlex(1).BodyPadding("30px 20px").ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.TextBox().ID("tbxUserName").FocusOnPageLoad(true).Label("帐号").Required(true).ShowRedStar(true),
+                    F.TextBox().ID("tbxPassword").TextMode(TextMode.Password).Required(true).ShowRedStar(true).Label("密码")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.ToolbarText().Text("管理员账号: admin/admin"),
+                    F.ToolbarFill(),
+                    F.Button().ID("btnSubmit").Icon(Icon.LockOpen).Type(ButtonType.Submit).ValidateForms("SimpleForm1").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1").Text("登陆")
+                )
+        )
+    )
+
+
+}
+
+

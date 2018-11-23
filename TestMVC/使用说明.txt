@@ -1,0 +1,107 @@
+﻿TestMVC
+基于 FineUIMvc 的通用权限管理框架，包括用户管理、职称管理、部门管理、角色管理、角色权限管理等模块。
+
+
+注意：
+	1. TestMVC作为演示程序，请不要直接用于真实项目。
+	2. TestMVC作为演示程序，版本之间不兼容，也不支持版本升级。
+
+
+
+使用步骤：
+	1. 用 VS2013 打开项目工程文件（TestMVC.sln）；
+	2. 运行（Ctrl+F5）！
+	3. 请使用管理员账号登陆（用户名：admin 密码：admin）。
+	
+
+	上面会默认使用 VS 自带的 LocalDb 数据库，如果使用 SQLServer 数据库：
+	1. 打开 Web.config，配属数据库连接字符串（connectionStrings->Default）；
+	2. 修改 AppBoxContext.cs 代码中 :base("Default")；
+
+
+知识储备：
+	1. 本项目采用Entity Framework的Code First开发模式，数据库会在网站第一次运行时自动创建。
+	2. 如果对Entity Framework不熟悉，请事先学习微软官方文档：http://msdn.microsoft.com/en-us/data/aa937723
+
+
+相关链接：
+	首页：http://fineui.com/mvc/
+	示例：http://mvc.fineui.com/
+	更新：http://fineui.com/version_mvc/
+	论坛：http://fineui.com/bbs/
+
+
+
+发布历史：
+
++2018-09-20 v5.2
+	-升级到FineUIMvc（基础版）v5.2.0。
+	-Net Framework框架由4.0升级为4.5.2。
+	-修正表格改变每页记录数后，序号列可能显示异常的问题（何少波-3RJIU3F）。
+	-系统配置->表格每页显示记录数，由数字输入框改为下拉列表。
+
+
+
++2018-04-23 v5.0
+	-升级到FineUIMvc（基础版）v5.0.0。
+	-删除部分列表页面中Form标签的Height和BodyPadding定义。
+	-调整弹出窗体高度，以及部分表格列宽度。
+	+首页TabStrip增加ShowInkBar=true属性。
+		-通过CSS样式去除激活选项卡的背景色。
+	-为角色权限管理页面增加右键菜单。
+
+
+
++2018-02-13 v4.1.0
+	+FineUIMvc升级为v4.1.0.1。
+		-字符串替换：[ui-icon]->[f-icon], [ui-state]->[f-state], [ui-widget]->[f-widget]。
+		-更新目录：res/themes。
+	+图标字体更新为内置图标字体。
+		-IconFont.Home -> IconFont._Home
+		-IconFont.Download -> IconFont._Download
+		-IconFont.Question -> IconFont._Question
+		-IconFont.Bank -> IconFont._Skin
+		-IconFont.SignOut -> IconFont._SignOut
+		-IconFont.Refresh -> IconFont._Refresh
+		-IconFont.Expand -> IconFont._Maximize（f-iconfont-maximize, f-iconfont-restore）
+	-后台接受表格字段参数由JArray Grid1_fields改为string[] Grid1_fields。
+	-从角色职称部门中移除用户时，接受参数由JArray deletedUserIDs改为string[] deletedUserIDs。
+	-添加用户到角色职称部门时，接受参数由JArray selectedRowIDs改为int[] selectedRowIDs。
+	-用户列表页面删除用户时，接受参数由JArray deletedRowIDs改为int[] deletedRowIDs。
+	+编辑菜单项保存时，出错（The property value of 'Power.ID' on one end of a relationship 
+		-do not match the property value of 'Menu.ViewPowerID' on the other end）
+		-MenuEdit_btnSaveClose_Click中增加对menu.ViewPowerID的赋值，以及对传入参数ViewPowerName为空的处理。
+	-主题仓库增加自定义纯色和自定义背景主题。
+	-更新首页标签（Views/Home/Index.cshtml），支持新增的纯色主题和图片背景主题。
+
+
+
++2017-03-13 v1.2.0
+	-FineUIMvc升级为v1.2.0。
+	-修正改变分页大小时没有更新分页工具栏的问题（jacky_j-9259）。
+	-修正菜单管理页面不能将ViewPower设为空的问题（sorachen-9269）。
+	-修正弹出窗体可能会出现横向滚动条的问题，需要为顶层面板设置布局（张文-9275）。
+	-用户新增和编辑页面可以在弹出窗体中修改角色、部门和职务。
+	+修正越权访问页面的问题（龙涛软件-9374）。
+		-页面能正确返回[您无权访问此页面！]，但VS调试时报错[服务器无法在发送 HTTP 标头之后追加标头]。
+	
+
+
++2017-01-12 v1.0.0
+	-数据模型增加外键属性，比如User.DeptID属性，并更新AppBoxMvcContext（Map->HasForeignKey）。
+	-菜单列表页面增加图标列。
+	-两种权限控制方式，CheckPower注解（自定义方法过滤器CheckPowerAttribute）或者CheckPower方法。
+	-角色用户页面，角色表格排序后保持之前的选中项。
+	-列表页面所有事件（触发输入框、表格排序和分页、每页记录数改变、窗体关闭、行删除）共用一个后台处理函数。
+	-自定义视图模型GridPagingInfo，来简化表格分页排序的数据处理和传递。
+	-POST方法的安全验证防止跨站请求伪造（CSRF）和过度提交（Over-Posting）。
+	-编辑用户数据时更新部分字段，其他编辑是全部更新。
+	-实现AppBox v6.0的功能。
+	
+
+
+注：AppBox 第一个开源版本于 2009-09-26 发布。
+	
+
+---	
+Copyright (C) 2008-2017 合肥三生石上软件有限公司

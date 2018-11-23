@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Index";
+    var F = @Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").Layout(LayoutType.Column).ShowBorder(false).ShowHeader(false).AutoScroll(true).IsViewPort(true)
+        .Items(
+            F.Panel().BodyPadding(5).Width(300).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ID("Panel2").Title("系统公告").Height(200).CssStyle("margin-bottom:5px;").BodyPadding(5).ShowBorder(true).ShowHeader(true)
+                        .Items(
+                            F.Label().ID("Label1").Text("这是系统公告")
+                        ),
+                    F.Panel().ID("Panel4").Title("系统公告").Height(200).CssStyle("margin-bottom:5px;").BodyPadding(5).ShowBorder(true).ShowHeader(true)
+                        .Items(
+                            F.Label().ID("Label3").Text("这是系统公告")
+                        )
+                ),
+            F.Panel().ID("Panel5").BodyPadding("5px 5px 5px 0").ColumnWidth("100%").ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ID("Panel3").Title("代办事宜").ColumnWidth("100%").Height(200).CssStyle("margin-bottom:5px;").BodyPadding(5).ShowBorder(true).ShowHeader(true)
+                        .Items(
+                            F.Label().ID("Label2").Text("这是代办事宜列表")
+                        ),
+                    F.Panel().ID("Panel6").Title("注意事项").ColumnWidth("100%").Height(200).CssStyle("margin-bottom:5px;").BodyPadding(5).ShowBorder(true).ShowHeader(true)
+                        .Items(
+                            F.Label().ID("Label4").Text("这是注意事项列表")
+                        )
+                )
+        )
+    )
+
+
+}
+

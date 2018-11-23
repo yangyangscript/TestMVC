@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "RoleUserNew";
+    var F = @Html.F();
+}
+
+@model IEnumerable<TestMVC.Models.User>
+
+@{
+    var PagingInfo = ViewBag.PagingInfo as TestMVC.Models.PagingInfoViewModel;
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).BodyPadding(10).Layout(LayoutType.Fit).IsViewPort(true)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnClose").Icon(Icon.SystemClose).Text("关闭").Listener("click", "F.activeWindow.hide();"),
+                    F.ToolbarSeparator(),
+                    F.Button().ID("btnSaveClose").Icon(Icon.SystemSaveClose).OnClick(Url.Action("RoleUserNew_btnSaveClose_Click"),
+                            new Parameter("selectedRowIDs", "F.ui.Grid1.getSelectedRows()"),
+                            new Parameter("roleID", "F.ui.roleID.getValue()")).Text("选择后关闭"),
+                    F.ToolbarFill(),
+                    F.TwinTriggerBox().ID("ttbSearchMessage").Width(180).ShowLabel(false).EmptyText("在用户名称中搜索").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).OnTrigger2Click(Url.Action("RoleUserNew_DoPostBack"), "Panel1", new Parameter("actionType", "trigger2", ParameterMode.String)).OnTrigger1Click(Url.Action("RoleUserNew_DoPostBack"), "Panel1", new Parameter("actionType", "trigger1", ParameterMode.String))
+                )
+        )
+        .Items(
+            F.HiddenField().ID("roleID").Text(Request.QueryString["roleID"]),
+            F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("ID").DataTextField("Name").AllowSorting(true).OnSort(Url.Action("RoleUserNew_DoPostBack"), "Panel1").AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("RoleUserNew_DoPostBack"), "Panel1").ClearSelectionBeforePaging(false).KeepCurrentSelection(true).KeepPagedSelection(true)
+                .Columns(
+                    F.RowNumberField().EnablePagingNumber(true),
+                    F.RenderFieldFor(m => m.Name, true).Width(100),
+                    F.RenderFieldFor(m => m.ChineseName, true).Width(100),
+                    F.RenderCheckFieldFor(m => m.Enabled, true).RenderAsStaticField(true).Width(50),
+                    F.RenderFieldFor(m => m.Gender, true).Width(50),
+                    F.RenderFieldFor(m => m.Email, true).Width(180),
+                    F.RenderFieldFor(m => m.Remark).ExpandUnusedSpace(true)
+                )
+                .PageItems(
+                    F.ToolbarSeparator(),
+                    F.ToolbarText().Text("每页记录数："),
+                    F.DropDownList().ID("ddlGridPageSize").Width(80).OnSelectedIndexChanged(Url.Action("RoleUserNew_DoPostBack"), "Panel1")
+                        .SelectedValue(PagingInfo.PageSize.ToString())
+                        .Items(
+                            F.ListItem().Text("10").Value("10"),
+                            F.ListItem().Text("20").Value("20"),
+                            F.ListItem().Text("50").Value("50"),
+                            F.ListItem().Text("100").Value("100")
+                        )
+                ).SortField(PagingInfo.SortField).SortDirection(PagingInfo.SortDirection).PageSize(PagingInfo.PageSize).RecordCount(PagingInfo.RecordCount).DataSource(Model)
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+    </script>
+}

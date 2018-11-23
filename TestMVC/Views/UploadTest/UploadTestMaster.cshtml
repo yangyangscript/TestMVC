@@ -1,0 +1,79 @@
+﻿@{                       
+    ViewBag.Title = "UploadTestMaster";
+    var F = @Html.F();
+}
+
+@section body
+{
+    
+        <input type="file" id="imageId" style="display:none;" onchange="javascript:funcIdPhoto();">        
+    <form id="html2" class="f-widget-header f-mainheader" name="form2">
+        <input type="file" id="imageDrving" onchange="javascript:funcDrvingPhoto();"><br />
+        <input type="button" value="上传照片" onclick="document.form2.imageDrving.click()">
+    </form>
+    @(F.Panel().IsViewPort(true).ShowBorder(false).ShowHeader(false).AutoScroll(true).IsViewPort(true).Layout(LayoutType.VBox)
+                  .Toolbars(
+                      F.Toolbar().ID("Toolbar1")
+                          .Items(
+                              F.Button().ID("btnClose").Icon(Icon.SystemClose).Text("关闭").Listener("click", "F.activeWindow.hide();"),
+                              F.ToolbarSeparator(),
+                              F.Button().ID("btnSaveClose").ValidateForms("SimpleForm1").Icon(Icon.SystemSaveClose).OnClick(Url.Action("BtnSaveOnClosed"),"tbxName").Text("保存后关闭"),
+                          F.Button().ID("testBtn").OnClientClick("$('#imageId').click();").Text("上传")
+                          )
+                  )
+                  .Items(
+                      F.Panel().Hidden(true).Height(50).Layout(LayoutType.Fit).BoxConfigPosition(BoxLayoutPosition.Center).ShowBorder(true).ShowHeader(false).ContentEl("#html1"),
+                      F.Panel().BoxFlex(1).ShowBorder(true).ShowHeader(false).Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
+                          F.SimpleForm().ShowBorder(false).ShowHeader(false).Width(120).Items(
+                              F.Image().ID("ImageId").BoxFlex(1)
+                              ),
+                          F.SimpleForm().BoxFlex(1).ShowBorder(false).ShowHeader(false).Items(
+                              F.TextBox().Label("输入框").ID("tbxName")
+                              )
+                          ),
+                      F.Panel().BoxFlex(1)
+                  ))
+}
+
+@section script
+{
+    <script>
+        function saveSucc(backValue) {
+            // 返回当前活动Window对象（浏览器窗口对象通过F.getActiveWindow().window获取）
+            var activeWindow = F.getActiveWindow();
+            activeWindow.window.onCloseBackValue(backValue);
+        }
+
+
+        function funcIdPhoto() {
+            var reader = new FileReader();
+            var AllowImgFileSize = 2100000; //上传图片最大值(单位字节)（ 2 M = 2097152 B ）超过2M上传失败
+            var file = $("#imageId")[0].files[0];
+            var imgUrlBase64;
+            if (file) {
+                //将文件以Data URL形式读入页面
+                imgUrlBase64 = reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    //var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
+                    if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
+                        F.alert('上传失败，请上传2M以下的图片！');
+                        return;
+                    } else {
+                        //执行上传操作
+                        F.alert(reader.result);
+                        F.ui.ImageId.setAttribute("src",reader.result);
+                        @*F.doPostBack('@Url.Action("PostIdentityTestImage")',
+                            {
+                                "base4Str": reader.result
+                            });*@
+                    }
+                }
+            }
+        }
+
+        function funcDrvingPhoto() {
+
+        }
+
+    </script>
+}

@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "TitleUser";
+    var F = @Html.F();
+}
+
+@model IEnumerable<TestMVC.Models.User>
+
+@{
+    var Grid1PagingInfo = ViewBag.Grid1PagingInfo as TestMVC.Models.PagingInfoViewModel;
+    var Grid2PagingInfo = ViewBag.Grid2PagingInfo as TestMVC.Models.PagingInfoViewModel;
+}
+
+
+@section body {
+
+    @(F.RegionPanel().ID("RegionPanel1").ShowBorder(false).IsViewPort(true)
+        .Regions(
+            F.Region().ID("Region1").ShowBorder(false).ShowHeader(false).Width(200).RegionPosition(Position.Left).Layout(LayoutType.Fit).BodyPadding(5)
+                .Items(
+                    F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(false).DataIDField("ID").DataTextField("Name").AllowSorting(true).ClearSelectionBeforeSorting(false).OnSort(Url.Action("TitleUser_Grid1_Sort"), "Grid1").EnableMultiSelect(false).Listener("rowclick", "TitleUser_Grid2_DoPostBack();")
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().DataField("Name").SortField("Name").ExpandUnusedSpace(true).HeaderText("职称名称")
+                        ).SortField(Grid1PagingInfo.SortField).SortDirection(Grid1PagingInfo.SortDirection).SelectedRowID(ViewBag.Grid1SelectedRowID).DataSource(ViewBag.Grid1DataSource)
+
+                ),
+            F.Region().ID("Region2").ShowBorder(false).ShowHeader(false).RegionPosition(Position.Center).Layout(LayoutType.VBox).BodyPadding("5px 5px 5px 0")
+                .Items(
+                    F.Form().ID("Form3").ShowHeader(false).ShowBorder(false).LabelAlign(LabelAlign.Right)
+                        .Rows(
+                            F.FormRow().ID("FormRow2")
+                                .Items(
+                                    F.TwinTriggerBox().ID("ttbSearchMessage").ShowLabel(false).EmptyText("在用户名称中搜索").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search).ShowTrigger1(false).Listener("trigger1click", "TitleUser_Grid2_DoPostBack('trigger1');").Listener("trigger2click", "TitleUser_Grid2_DoPostBack('trigger2');"),
+                                    F.Label()
+                                )
+                        ),
+                    F.Grid().ID("Grid2").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("ID").DataTextField("Name").AllowSorting(true).Listener("sorting", "TitleUser_Grid2_DoPostBack();").AllowPaging(true).IsDatabasePaging(true).Listener("paging", "TitleUser_Grid2_DoPostBack();")
+                        .Toolbars(
+                            F.Toolbar().ID("Toolbar1")
+                                .Items(
+                                    F.Button().ID("btnDeleteSelected").Icon(Icon.Delete).Text("从当前职称移除选中的用户").Enabled(ViewBag.CoreTitleUserDelete).Listener("click", "onDeleteSelectedClick"),
+                                    F.ToolbarFill(),
+                                    F.Button().ID("btnNew").Icon(Icon.Add).Text("添加用户到当前职称").Enabled(ViewBag.CoreTitleUserNew).Listener("click", "onNewClick")
+                                )
+                        )
+                        .PageItems(
+                            F.ToolbarSeparator(),
+                            F.ToolbarText().Text("每页记录数："),
+                            F.DropDownList().ID("ddlGridPageSize").Width(80).Listener("change", "TitleUser_Grid2_DoPostBack('changeGridPageSize');")
+                                .SelectedValue(Grid2PagingInfo.PageSize.ToString())
+                                .Items(
+                                    F.ListItem().Text("10").Value("10"),
+                                    F.ListItem().Text("20").Value("20"),
+                                    F.ListItem().Text("50").Value("50"),
+                                    F.ListItem().Text("100").Value("100")
+                                )
+                        )
+                        .Columns(
+                            F.RowNumberField().EnablePagingNumber(true),
+                            F.RenderFieldFor(m => m.Name, true).Width(100),
+                            F.RenderFieldFor(m => m.ChineseName, true).Width(100),
+                            F.RenderCheckFieldFor(m => m.Enabled, true).RenderAsStaticField(true).Width(50),
+                            F.RenderFieldFor(m => m.Gender, true).Width(50),
+                            F.RenderFieldFor(m => m.Email, true).Width(180),
+                            F.RenderFieldFor(m => m.Remark).ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("").EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderActionView").Width(50),
+                            F.RenderField().HeaderText("").EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderActionDelete").Width(50)
+                        ).SortField(Grid2PagingInfo.SortField).SortDirection(Grid2PagingInfo.SortDirection).PageSize(Grid2PagingInfo.PageSize).RecordCount(Grid2PagingInfo.RecordCount).DataSource(Model)
+                )
+        )
+    )
+
+    @(F.Window().ID("Window1").IsModal(true).Hidden(true).Target(Target.Top).EnableResize(true).EnableMaximize(true).EnableIFrame(true).Width(900).Height(550).Listener("close", "TitleUser_Grid2_DoPostBack();"))
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        var coreTitleUserDelete = @Convert.ToString(ViewBag.CoreTitleUserDelete).ToLower();
+
+        function onNewClick(event) {
+            var selectedRowData = F.ui.Grid1.getSelectedRow(true);
+            var url= '@Url.Content("~/Admin/TitleUserNew?titleID=")' + selectedRowData.id;
+            F.ui.Window1.show(url, '添加用户到当前职称（' + selectedRowData.text  + '）');
+        }
+
+        function renderActionView(value, params) {
+            var imageUrl = '@Url.Content("~/res/icon/information.png")';
+            return '<a class="action-btn view" href="javascript:;"><img class="f-grid-cell-icon" src="' + imageUrl + '"></a>';
+        }
+
+        function renderActionDelete(value, params) {
+            var imageUrl = '@Url.Content("~/res/icon/delete.png")';
+            var disabledCls = coreTitleUserDelete ? '' : ' f-state-disabled';
+            return '<a class="action-btn delete'+ disabledCls +'" href="javascript:;"><img class="f-grid-cell-icon" src="' + imageUrl + '"></a>';
+        }
+
+
+        function onDeleteSelectedClick(event) {
+            var grid2 = F.ui.Grid2;
+
+            if (!grid2.hasSelection()) {
+                F.alert('请至少选择一项！');
+                return;
+            }
+
+            var selectedRows = grid2.getSelectedRows();
+            F.confirm({
+                message: '你确定要删除选中的&nbsp;<b>' + selectedRows.length + '</b>&nbsp;行数据吗？',
+                target: '_top',
+                ok: function () {
+                    // 触发后台事件
+                    TitleUser_Grid2_DoPostBack("delete", {
+                        deletedUserIDs: selectedRows
+                    });
+                }
+            });
+        }
+
+        
+        function TitleUser_Grid2_DoPostBack(actionType, actionParams) {
+            var params = {
+                selectedTitleId: F.ui.Grid1.getSelectedRow()
+            };
+
+            // 加入扩展参数
+            if(actionType) {
+                params.actionType = actionType;
+            }
+            if(actionParams) {
+                $.extend(params, actionParams);
+            }
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("TitleUser_Grid2_DoPostBack")', 'Region2', params);
+        }
+
+        F.ready(function () {
+
+            var grid2 = F.ui.Grid2;
+            grid2.el.on('click', 'a.action-btn', function (event) {
+                var cnode = $(this);
+                var rowData = grid2.getRowData(cnode.closest('.f-grid-row'));
+
+                // 是否禁用
+                if(cnode.hasClass('f-state-disabled')) {
+                    return;
+                }
+
+                if (cnode.hasClass('delete')) {
+                    F.confirm({
+                        message: '确定删除此记录？',
+                        target: '_top',
+                        ok: function () {
+                            // 触发后台事件
+                            TitleUser_Grid2_DoPostBack("delete", {
+                                deletedUserIDs: [rowData.id]
+                            });
+                        }
+                    });
+                } else if (cnode.hasClass('view')) {
+                    F.ui.Window1.show('@Url.Content("~/Admin/UserView?id=")' + rowData.id, "查看用户信息");
+                }
+            });
+
+        });
+
+    </script>
+}

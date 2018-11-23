@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "RoleEdit";
+    var F = @Html.F();
+}
+
+@model TestMVC.Models.Role
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).AutoScroll(true).IsViewPort(true).Layout(LayoutType.VBox)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnClose").Icon(Icon.SystemClose).Text("关闭").Listener("click", "F.activeWindow.hide();"),
+                    F.ToolbarSeparator(),
+                    F.Button().ID("btnSaveClose").ValidateForms("SimpleForm1").Icon(Icon.SystemSaveClose).OnClick(Url.Action("RoleEdit_btnSaveClose_Click"), "SimpleForm1").Text("保存后关闭")
+                )
+        )
+        .Items(
+            F.SimpleForm().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).BodyPadding(10)
+                .Items(
+                    F.HiddenFieldFor(m => m.ID),
+                    F.TextBoxFor(m => m.Name),
+                    F.TextAreaFor(m => m.Remark)
+                )
+        )
+    )
+
+}
