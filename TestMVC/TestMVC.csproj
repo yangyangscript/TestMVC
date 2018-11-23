@@ -136,6 +136,7 @@
     <Compile Include="CommonHelp\StringHelp.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DynAdd\DynAddDefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UploadTestController.cs" />
@@ -1961,6 +1962,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="res\js\" />
     <Folder Include="res\themes\baidu_images\" />
+    <Folder Include="Views\DynAddDefaultPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -2091,6 +2093,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UploadTest\TestLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DynAddDefault\DefaultPage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

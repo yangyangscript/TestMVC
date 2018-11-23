@@ -1,0 +1,43 @@
+﻿@{                       
+   var F = @Html.F();
+}                          
+
+@section body
+{         
+    <div id="dyn">
+        
+    </div>
+
+    @F.Panel().IsViewPort(true).ShowBorder(false).ShowHeader(false).ID("mPanel").Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).Items(
+        F.Button().Text("Add").Listener("click", "funcAdd"),
+        F.Panel().ShowBorder(true).ShowHeader(false).ContentEl("#dyn")       
+        )
+    )
+    @(F.HiddenField().ID("hfId").Text("1"))
+}                                                                     
+
+
+
+
+@section script
+{
+    <script>
+
+        function funcAdd() {
+            var hfStr = F.ui.hfId.getValue();
+
+            var hIndex = parseInt(hfStr)+1;
+            F.ui.hfId.setValue(hIndex.toString());
+            
+            F.ui({
+                type: 'textbox',             
+                renderTo: '#dyn',
+                id: hfStr,
+                redStar: true,
+                fieldLabel: '用户名' + hfStr,
+                required: true,
+                emptyText: '请输入用户名' + hfStr
+            });
+        }
+    </script>
+}
