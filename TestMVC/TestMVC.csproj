@@ -141,6 +141,10 @@
     <Compile Include="Controllers\GridConfigure\GridConfigureDefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MasterPage\2_AddPage.cs" />
+    <Compile Include="Controllers\MasterPage\1_DefaultPage.cs" />
+    <Compile Include="Controllers\MasterPage\3_EditorPage.cs" />
+    <Compile Include="Controllers\MasterPage\MasterPageController.cs" />
     <Compile Include="Controllers\UploadTestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -173,6 +177,7 @@
     <Compile Include="ViewModel\GridConfig.cs" />
     <Compile Include="ViewModel\GridFirst.cs" />
     <Compile Include="ViewModel\Grid_Atterbute.cs" />
+    <Compile Include="ViewModel\MasterInfoView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1912,7 +1917,7 @@
     <Content Include="res\images\logo\logo3_old.gif" />
     <Content Include="res\images\logo\logo_old.gif" />
     <Content Include="res\images\my_face_80.jpg" />
-    <Content Include="res\js\Tools.js" />
+    <Content Include="res\js\GridHelp.js" />
     <Content Include="res\languages\zh_UEY.js" />
     <Content Include="res\themes\bootstrap_pure\theme.css" />
     <Content Include="res\themes\custom_default\theme.css" />
@@ -2103,6 +2108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\GridConfigureDefault\DefaultPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\MasterPage\ManagerPage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
