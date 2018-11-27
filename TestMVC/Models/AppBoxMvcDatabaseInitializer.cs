@@ -27,10 +27,36 @@ namespace TestMVC.Models
         private static List<Menu> GetMenus(AppBoxMvcContext context)
         {
             var menus = new List<Menu> { 
+                new Menu()
+                {
+                    Name = "测试模块",
+                    SortIndex=0,
+                    Remark = "顶级菜单",
+                    ImageUrl = "~/res/icon/cog.png",
+                    Children = new List<Menu>()
+                    {
+                        new Menu()
+                        {
+                            Name = "动态加控件",
+                            SortIndex = 100,
+                            Remark = "二级菜单",
+                            NavigateUrl = "~/DynAddDefault/DefaultPage",
+                            ImageUrl = "~/res/icon/tag_blue.png",
+                        },
+                        new Menu()
+                        {
+                            Name = "导出配置",
+                            SortIndex = 100,
+                            Remark = "二级菜单",
+                            NavigateUrl = "~/GridConfigureDefault/DefaultPage",
+                            ImageUrl = "~/res/icon/tag_blue.png",
+                        }
+                    }
+                },
                 new Menu
                 {
                     Name = "系统管理",
-                    SortIndex = 1,
+                    SortIndex = 9999,
                     Remark = "顶级菜单",
                     ImageUrl = "~/res/icon/cog.png",
                     Children = new List<Menu> { 
