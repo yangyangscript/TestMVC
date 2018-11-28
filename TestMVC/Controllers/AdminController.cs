@@ -1994,6 +1994,33 @@ namespace TestMVC.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TestBindGridOnClick(JObject gridItem)
+        {
+            IQueryable<User> q = db.Users;
+            var grid1UI = UIHelper.Grid("Grid1");
+            var gridItemC = gridItem.ToObject<ViewModel.GridConfig>();
+            var pagingInfo = new PagingInfoViewModel
+            {
+                RecordCount = q.Count(),
+                SortField = gridItemC.SortField,
+                SortDirection = gridItemC.SortDirection,
+                PageIndex = gridItemC.PageIndex,
+                PageSize = gridItemC.PageSize
+            };
+            // 1. 设置总项数
+            grid1UI.RecordCount(pagingInfo.RecordCount);
+            // 2. 设置每页显示项数
+            grid1UI.PageSize(gridItemC.PageSize);
+            // 3.设置分页数据
+            q = SortAndPage<User>(q, pagingInfo);
+            grid1UI.DataSource(q, gridItemC.Fields);
+
+            Alert.Show(Newtonsoft.Json.JsonConvert.SerializeObject(gridItemC));
+            return UIHelper.Result();
+        }
+
         private List<User> UserList_GetData(PagingInfoViewModel pagingInfo, string ttbSearchMessage, string rblEnableStatus)
         {
             IQueryable<User> q = db.Users;
@@ -2459,5 +2486,7 @@ namespace TestMVC.Controllers
         }
 
         #endregion
+
+        
     }
 }

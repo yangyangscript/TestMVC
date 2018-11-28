@@ -177,6 +177,7 @@
     <Compile Include="ViewModel\ExportConfig.cs" />
     <Compile Include="ViewModel\ExportFirst.cs" />
     <Compile Include="ViewModel\ExportConfig_Atterbute.cs" />
+    <Compile Include="ViewModel\GridConfig.cs" />
     <Compile Include="ViewModel\MasterInfoView.cs" />
   </ItemGroup>
   <ItemGroup>

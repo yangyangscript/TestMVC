@@ -66,7 +66,8 @@
                                     )
                                 ),
                             F.ToolbarFill(),
-                            F.Button().ID("btnNew").Icon(Icon.Add).Text("新增用户").Listener("click", "onNewClick").Enabled(ViewBag.CoreUserNew)
+                            F.Button().ID("btnNew").Icon(Icon.Add).Text("新增用户").Listener("click", "onNewClick").Enabled(ViewBag.CoreUserNew),
+                            F.Button().Text("TestBindGrid").OnClick(Url.Action("TestBindGridOnClick"), new Parameter("gridItem", "getGridConfig('Grid1')", ParameterMode.Script))                           
                         )
                 ).SortField(PagingInfo.SortField).SortDirection(PagingInfo.SortDirection).PageSize(PagingInfo.PageSize).RecordCount(PagingInfo.RecordCount).DataSource(Model)
             )
@@ -78,10 +79,10 @@
 
 
 @section script {
-
+    <script src="~/res/js/GridHelp.js"></script>
     <script>
 
-    var coreUserEdit = @Convert.ToString(ViewBag.CoreUserEdit).ToLower();
+    var coreUserEdit = @Convert.ToString(ViewBag.CoreUserEdit).ToLower();                                                      
     var coreUserDelete = @Convert.ToString(ViewBag.CoreUserDelete).ToLower();
     var coreUserChangePassword = @Convert.ToString(ViewBag.CoreUserChangePassword).ToLower();
 
@@ -177,7 +178,21 @@
                     });
                 }
             });
-        }
+        };
+
+    //function GridConfig() {
+    //    var gird = F.ui.Grid1;
+    //    var ret = {
+    //        "fields": gird.fields,
+    //        "IsPaging": gird.paging,
+    //        "IsSorting": gird.sorting,
+    //        "PageSize": gird.pageSize,
+    //        "PageIndex": gird.pageIndex,
+    //        "SortField": gird.sortField,
+    //        "SortDirection": gird.sortDirection
+    //    };
+    //    return F.toJSON(ret);
+    //};
 
         F.ready(function () {
 

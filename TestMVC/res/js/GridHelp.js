@@ -33,4 +33,17 @@ function renderAction(keyStr,titleStr) {
     //var itemHtml = F.formatString('<li><span data-qtip="{0}">', item.name);
     if (iconStr == "") return "";
     return F.formatString('<a class="action-btn {0}" href="javascript:;" title="{1}"><img class="f-grid-cell-icon" src="/res/icon/{2}.png"></a>', keyStr, titleStr, iconStr);
-}
+};
+function getGridConfig(gridId) {
+    var gird = F(gridId);
+    var ret = {
+        "fields": gird.fields,
+        "IsPaging": gird.paging,
+        "IsSorting": gird.sorting,
+        "PageSize": gird.pageSize,
+        "PageIndex": gird.pageIndex,
+        "SortField": gird.sortField,
+        "SortDirection": gird.sortDirection
+    };
+    return F.toJSON(ret);
+};
