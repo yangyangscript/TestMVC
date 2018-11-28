@@ -8,17 +8,17 @@ namespace TestMVC.CommonHelp
 {
     public class GirdConfigHelp
     {
-        private static List<GridConfig> GetGridConfigs<T>()
+        private static List<ExportConfig> GetGridConfigs<T>()
         {
-            var attrType = typeof(Grid_Atterbute);
+            var attrType = typeof(ExportConfig_Atterbute);
             var propertyItems = typeof(T).GetProperties()
                 .Select(s => new
-                    {Name = s.Name, Attr = (Grid_Atterbute) s.GetCustomAttributes(attrType, false).FirstOrDefault()})
+                    {Name = s.Name, Attr = (ExportConfig_Atterbute) s.GetCustomAttributes(attrType, false).FirstOrDefault()})
                 .Where(s => s.Attr != null).ToList();
-            var ret= new List<GridConfig>();
+            var ret= new List<ExportConfig>();
             for (int i = 0; i < propertyItems.Count; i++)
             {
-                ret.Add(new GridConfig()
+                ret.Add(new ExportConfig()
                 {
                     Name = propertyItems[i].Name,
                     Title = propertyItems[i].Attr.Title,
@@ -29,14 +29,14 @@ namespace TestMVC.CommonHelp
             return ret;
         }
 
-        private static List<GridConfig> _girdFistConfig;
+        private static List<ExportConfig> _girdFistConfig;
 
-        public static List<GridConfig> GirdFistConfig {
+        public static List<ExportConfig> GirdFistConfig {
             get
             {
                 if (_girdFistConfig == null)
                 {
-                    _girdFistConfig = GetGridConfigs<GridFirst>();
+                    _girdFistConfig = GetGridConfigs<ExportFirst>();
                 }
                 return _girdFistConfig;
             }

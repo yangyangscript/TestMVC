@@ -2,7 +2,7 @@
     var F = @Html.F();
 }     
                                
-@model List<TestMVC.ViewModel.GridConfig>
+@model List<TestMVC.ViewModel.ExportConfig>
 
 @section body
 {
@@ -88,6 +88,11 @@
         F.ready(function () {          
             BindGirdClick();
         });
+
+
+        function getGirdInfo(parameters) {
+            
+        }
 
     </script>
 }

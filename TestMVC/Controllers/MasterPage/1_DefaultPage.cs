@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FineUIMvc;
 
 namespace TestMVC.Controllers
 {
@@ -10,8 +11,14 @@ namespace TestMVC.Controllers
     {
 
         public ActionResult ManagerPage()
-        {
+        {           
             return View();
+        }
+
+        public ActionResult BindGrid()
+        {
+            
+            return UIHelper.Result();
         }
     }
 }

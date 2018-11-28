@@ -15,7 +15,7 @@ namespace AppBoxMvc.Controllers.GridConfigure
         // GET: GridConfigureDefault
         public ActionResult DefaultPage()
         {
-            var items = TestMVC.CommonHelp.GirdConfigHelp.GirdFistConfig.Select(s =>(GridConfig) s.Clone()).ToList();
+            var items = TestMVC.CommonHelp.GirdConfigHelp.GirdFistConfig.Select(s =>(ExportConfig) s.Clone()).ToList();
             return View(items);
         }
 
@@ -25,7 +25,7 @@ namespace AppBoxMvc.Controllers.GridConfigure
 
         public ActionResult ShowOnClick(string hfData)
         {
-            var items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GridConfig>>(hfData);
+            var items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ExportConfig>>(hfData);
             Alert.Show(items[0].Title);
             return UIHelper.Result();
         }
@@ -33,7 +33,7 @@ namespace AppBoxMvc.Controllers.GridConfigure
 
         public ActionResult ChangeItems(string hfData,string name,int status,int rowIndex)
         {
-            var items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GridConfig>>(hfData);                       
+            var items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ExportConfig>>(hfData);                       
             switch (status)
             {
                 case 1://前移

@@ -174,9 +174,9 @@
     <Compile Include="Models\Util\ScriptUtil.cs" />
     <Compile Include="Models\Util\StringUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\GridConfig.cs" />
-    <Compile Include="ViewModel\GridFirst.cs" />
-    <Compile Include="ViewModel\Grid_Atterbute.cs" />
+    <Compile Include="ViewModel\ExportConfig.cs" />
+    <Compile Include="ViewModel\ExportFirst.cs" />
+    <Compile Include="ViewModel\ExportConfig_Atterbute.cs" />
     <Compile Include="ViewModel\MasterInfoView.cs" />
   </ItemGroup>
   <ItemGroup>

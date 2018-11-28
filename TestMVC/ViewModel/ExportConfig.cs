@@ -6,7 +6,7 @@ using System.Web;
 
 namespace TestMVC.ViewModel
 {
-    public class GridConfig:ICloneable
+    public class ExportConfig:ICloneable
     {
         [Display(Name = "名字")]
         public string Name { get; set; }
@@ -22,7 +22,7 @@ namespace TestMVC.ViewModel
         /// <returns>作为此实例副本的新对象。</returns>
         public object Clone()
         {
-            return new GridConfig()
+            return new ExportConfig()
             {
                 Name = this.Name,
                 Title = this.Title,

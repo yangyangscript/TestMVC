@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TestMVC.ViewModel
 {
-    public sealed class Grid_Atterbute : System.Attribute
+    public sealed class ExportConfig_Atterbute : System.Attribute
     {
         public string Title { get; set; }
     }

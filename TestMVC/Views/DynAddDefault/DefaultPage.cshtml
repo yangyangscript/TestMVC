@@ -10,6 +10,7 @@
 
     @F.Panel().IsViewPort(true).ShowBorder(false).ShowHeader(false).ID("mPanel").Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).Items(
         F.Button().Text("Add").Listener("click", "funcAdd"),
+        F.TwinTriggerBox().ID("ttbSearchMessage").ShowLabel(false).EmptyText("在用户名称中搜索").Trigger2Icon(TriggerIcon.ArrowDown).ShowTrigger1(false),
         F.Panel().ShowBorder(true).ShowHeader(false).ContentEl("#dyn")       
         )
     )
