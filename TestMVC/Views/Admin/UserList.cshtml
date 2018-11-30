@@ -67,14 +67,14 @@
                                 ),
                             F.ToolbarFill(),
                             F.Button().ID("btnNew").Icon(Icon.Add).Text("新增用户").Listener("click", "onNewClick").Enabled(ViewBag.CoreUserNew),
-                            F.Button().Text("TestBindGrid").OnClick(Url.Action("TestBindGridOnClick"), new Parameter("gridItem", "getGridConfig('Grid1')", ParameterMode.Script))                           
+                            F.Button().Text("TestBindGrid").OnClick(Url.Action("TestBindGridOnClick"), new Parameter("gridItem", "getGridConfig('Grid1')", ParameterMode.Script))                        
                         )
                 ).SortField(PagingInfo.SortField).SortDirection(PagingInfo.SortDirection).PageSize(PagingInfo.PageSize).RecordCount(PagingInfo.RecordCount).DataSource(Model)
             )
     )
 
     @(F.Window().ID("Window1").IsModal(true).Hidden(true).Target(Target.Top).EnableResize(true).EnableMaximize(true).EnableIFrame(true).Width(900).Height(600).OnClose(Url.Action("UserList_DoPostBack"), "Panel1"))
-
+                                                                                     
 }
 
 

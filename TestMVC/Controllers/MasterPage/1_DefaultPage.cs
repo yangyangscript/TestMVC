@@ -11,8 +11,9 @@ namespace TestMVC.Controllers
     {
 
         public ActionResult ManagerPage()
-        {           
-            return View();
+        {
+            var items = GetDatas(100);
+            return View(items);
         }
 
         public ActionResult BindGrid()

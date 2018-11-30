@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Data.Entity;
+using Newtonsoft.Json.Linq;
 using TestMVC.Models;
 
 namespace TestMVC.Controllers
@@ -567,6 +568,44 @@ namespace TestMVC.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        #endregion
+
+
+
+        #region Grid相关
+
+        protected void BindGird<T>(IQueryable<T> q,string gird,JObject gridItem)
+        {
+            var grid1UI = UIHelper.Grid("Grid1");
+            var gridItemC = gridItem.ToObject<ViewModel.GridConfig>();
+            if (gridItemC.IsPaging)
+            {
+                var pagingInfo = new PagingInfoViewModel
+                {
+                    RecordCount = q.Count(),
+                    SortField = gridItemC.SortField,
+                    SortDirection = gridItemC.SortDirection,
+                    PageIndex = gridItemC.PageIndex,
+                    PageSize = gridItemC.PageSize
+                };
+                // 1. 设置总项数
+                grid1UI.RecordCount(pagingInfo.RecordCount);
+                // 2. 设置每页显示项数
+                grid1UI.PageSize(gridItemC.PageSize);
+                // 3.设置分页数据
+                q = SortAndPage<T>(q, pagingInfo);             
+            }
+            grid1UI.DataSource(q, gridItemC.Fields);
+        }
+
+
+        protected void BindGird<T>(List<T> items, string gird, JObject gridItem)
+        {
+            var grid1UI = UIHelper.Grid("Grid1");
+            var gridItemC = gridItem.ToObject<ViewModel.GridConfig>();
+            grid1UI.DataSource(items, gridItemC.Fields);
         }
 
         #endregion

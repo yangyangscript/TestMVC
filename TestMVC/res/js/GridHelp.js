@@ -5,6 +5,9 @@
 function renderAction(keyStr,titleStr) {
     var iconStr = "";
     switch (keyStr) {
+        case "view":
+            iconStr = "information";
+            break;
         case "info":
             iconStr = "information";
             break;
@@ -46,4 +49,11 @@ function getGridConfig(gridId) {
         "SortDirection": gird.sortDirection
     };
     return F.toJSON(ret);
+};
+
+
+function selectAll(gridId) {
+    var grid = F(gridId);
+    grid.deselectAllRows();
+    alert('123');
 };
