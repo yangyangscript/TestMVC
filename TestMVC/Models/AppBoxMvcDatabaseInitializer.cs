@@ -50,7 +50,15 @@ namespace TestMVC.Models
                             Remark = "二级菜单",
                             NavigateUrl = "~/GridConfigureDefault/DefaultPage",
                             ImageUrl = "~/res/icon/tag_blue.png",
-                        }
+                        },
+                        new Menu()
+                        {
+                            Name = "常规页面布局",
+                            SortIndex = 1,
+                            Remark = "二级菜单",
+                            NavigateUrl = "~/MasterPage/ManagerPage",
+                            ImageUrl = "~/res/icon/tag_blue.png",
+                        },
                     }
                 },
                 new Menu

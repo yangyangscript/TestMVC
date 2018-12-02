@@ -603,8 +603,36 @@ namespace TestMVC.Controllers
 
         protected void BindGird<T>(List<T> items, string gird, JObject gridItem)
         {
-            var grid1UI = UIHelper.Grid("Grid1");
+            var grid1UI = UIHelper.Grid(gird);
             var gridItemC = gridItem.ToObject<ViewModel.GridConfig>();
+            if (gridItemC.IsPaging)
+            {
+                var recordCount = items.Count;
+                grid1UI.RecordCount(recordCount);
+                // 2. 设置每页显示项数
+                grid1UI.PageSize(gridItemC.PageSize);
+                // 3.设置分页数据
+                int pageCount = recordCount / gridItemC.PageSize;
+                if (recordCount % gridItemC.PageSize != 0)
+                {
+                    pageCount++;
+                }
+                if (gridItemC.PageIndex > pageCount - 1)
+                {
+                    gridItemC.PageIndex = pageCount - 1;
+                }
+                if (gridItemC.PageIndex < 0)
+                {
+                    gridItemC.PageIndex = 0;
+                }
+
+                items = gridItemC.SortDirection == "ASC"
+                    ? items.OrderBy(s => gridItemC.SortField).Skip(gridItemC.PageIndex * gridItemC.PageSize)
+                        .Take(gridItemC.PageSize).ToList()
+                    : items.OrderByDescending(s => gridItemC.SortField).Skip(gridItemC.PageIndex * gridItemC.PageSize)
+                        .Take(gridItemC.PageSize).ToList();
+                //Sort(items, gridItemC.SortField, gridItemC.SortDirection).Skip(gridItemC.PageIndex * gridItemC.PageSize).Take(gridItemC.PageSize);
+            }
             grid1UI.DataSource(items, gridItemC.Fields);
         }
 

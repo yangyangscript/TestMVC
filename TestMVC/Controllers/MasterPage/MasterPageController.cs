@@ -7,7 +7,7 @@ using TestMVC.ViewModel;
 
 namespace TestMVC.Controllers
 {
-    public partial class MasterPageController : Controller
+    public partial class MasterPageController : BaseController
     {
         private List<ViewModel.MasterInfoView> GetDatas(int num)
         {
@@ -21,6 +21,7 @@ namespace TestMVC.Controllers
                 var nu4 = i * 7;               
                 ret.Add(new MasterInfoView()
                 {
+                    Id = i,
                       Name1 = $"Name_{nu1}",
                       Name2  = $"Name_{nu2}",
                         Name3 = $"Name_{nu3}",

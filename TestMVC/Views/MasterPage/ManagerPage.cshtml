@@ -2,31 +2,19 @@
     var F = @Html.F();
 }
 
-{
-@model List<TestMVC.ViewModel.MasterInfoView>
-}
-
+@model IEnumerable<TestMVC.ViewModel.MasterInfoView>
 
 @{
-    int nameWith = 80;
-    int itemWith = 270;
+    int nameWith = 75;
+    int itemWith = 250;
 }
 
 @section head
-{
-    <style>
-        .formitem {
-            margin-bottom: 2px;
-        }
-
-        .inline {
-            margin-left: 30px;
-            margin-top: 3px;
-            float: left;
-        }
-
+{    
+    <style>       
         .marginr {
-            margin-right: 5px;
+            margin-top: -3px;
+            margin-left: 28px;
         }
     </style>
 }
@@ -35,49 +23,29 @@
 
 @section body
 {
-    @(
-    F.Panel().IsViewPort(true).BodyPadding(5).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
-        F.Form().ID("whereForm").ShowBorder(false).ShowHeader(false).MessageTarget(MessageTarget.Qtip).Items(
-            F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DropDownList().Label("保险公司").LabelWidth(nameWith).CssClass("marginr").ID("DdlCompany").Width(itemWith),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DropDownList().Label("部门机构").LabelWidth(nameWith).CssClass("marginr").ID("DdlDept").Width(itemWith),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DropDownList().Label("时间类型").LabelWidth(nameWith).CssClass("marginr").ID("DdlTimeType").Width(itemWith).Items(F.ListItem().Value("0").Text("创建日期").Selected(true), F.ListItem().Value("1").Text("终保日期")),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.TextBox().Label("旧保单号").ID("tbxBdh").LabelWidth(nameWith).CssClass("marginr").Width(itemWith)
+    @F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).BoxConfigPadding(5).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
+        F.Form().ID("whereForm").ShowBorder(false).ShowHeader(false).MarginTop(5).MessageTarget(MessageTarget.Qtip).Items(
+            F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+
+                F.TextBox().Label("一行一列").LabelWidth(nameWith).CssClass("marginr").ID("t11").Width(itemWith),
+                F.TextBox().Label("一行二列").LabelWidth(nameWith).CssClass("marginr").ID("t12").Width(itemWith),
+                F.TextBox().Label("一行三列").LabelWidth(nameWith).CssClass("marginr").ID("t13").Width(itemWith),
+                F.DropDownList().Label("一行四列").ID("t11").LabelWidth(nameWith).Width(itemWith).CssClass("marginr").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
                 ),
             F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.TextBox().Label("车牌号码").LabelWidth(nameWith).CssClass("marginr").ID("tbxCPHM").Width(itemWith),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DropDownList().Label("客服人员").LabelWidth(nameWith).CssClass("marginr").ID("DdlUser").Width(itemWith).MatchFieldWidth(false).Items(F.ListItem().Text("全部人员").Value("0")).EnableEdit(true),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DatePicker().Label("开始时间").LabelWidth(nameWith).CssClass("marginr").ID("dateStar").Width(itemWith).SelectedDate(DateTime.Now)
-                ),
-            F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.TextBox().Label("车主").LabelWidth(nameWith).CssClass("marginr").ID("tbxCz").Width(itemWith),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DropDownList().Label("状态").LabelWidth(nameWith).CssClass("marginr").ID("DdlStatus").Width(itemWith).EnableSimulateTree(true).Items(
-                    F.ListItem().SimulateTreeLevel(0).Value("0").Text("全部类型"),
-                    F.ListItem().SimulateTreeLevel(1).Value("1").Text("未分配")),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.DatePicker().Label("结束时间").LabelWidth(nameWith).CssClass("marginr").ID("dateEnd").Width(itemWith).SelectedDate(DateTime.Now).CompareControl("dateStar").CompareOperator(Operator.GreaterThanEqual).CompareMessage("结束时间应该大于开始时间"),
-                F.Label().ShowLabel(false).CssClass("inline"),
-                F.Button().Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit).OnClick(Url.Action("BindGrid"), "panel1"),
-                F.Button().Text("测试")),
-            F.Button().Icon(Icon.PageExcel).Text("导出选中").OnClick(e =>
-            {
-                e.AjaxLoadingType = AjaxLoadingType.Mask;
-                e.ShowAjaxLoadingMaskText = true;
-                e.AjaxLoadingMaskText = "正在导出，请稍后......";
-            })
+                F.TextBox().Label("二行一列").LabelWidth(nameWith).CssClass("marginr").ID("t21").Width(itemWith),
+                F.TextBox().Label("二行二列").LabelWidth(nameWith).CssClass("marginr").ID("t22").Width(itemWith),
+                F.TextBox().Label("二行三列").LabelWidth(nameWith).CssClass("marginr").ID("t23").Width(itemWith),
+                F.DatePicker().Label("二行四列").LabelWidth(nameWith).CssClass("marginr").ID("t24").Width(itemWith),
+
+                F.Button().CssClass("marginr").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                    .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                //.Listener("click", "getParams()")
+                )
             ),
-        F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("ID")
-            .AllowSorting(true).OnSort(Url.Action("BindGrid"), "panel1").SortField("CreateTime").SortDirection("DESC")
-            .AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("BindGrid"), "panel1")
+        F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("Id")
+            .AllowSorting(false).OnSort(Url.Action("BindGrid"), "panel1",new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script)).SortField("CreateTime").SortDirection("DESC")
+            .AllowPaging(false).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
             .Toolbars(F.Toolbar().Items(
                 F.CheckBox().Text("全部数据").CssStyle("margin-left: 2px;").Width(80).Listener("change", "selectAll('Gird1');")
                 ))
@@ -87,32 +55,37 @@
                 F.RenderFieldFor(s => s.Name2, true).Width(120),
                 F.RenderFieldFor(s => s.Name3, true).Width(120),
                 F.RenderFieldFor(s => s.Name4, true).Width(150),
-                F.RenderFieldFor(s=>s.Number1).Width(100),
-                F.RenderFieldFor(s=>s.Number2).Width(100),
-                F.RenderFieldFor(s=>s.Number3).Width(100),
-                F.RenderFieldFor(s=>s.Number4).Width(100),
-                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderAction('info','明细')").Width(50)
-                //F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderSec").Width(50),
-                //F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderThrid").Width(50) 
+                F.RenderFieldFor(s => s.Number1,true).Width(100),
+                F.RenderFieldFor(s => s.Number2, true).Width(100),
+                F.RenderFieldFor(s => s.Number3, true).Width(100),
+                F.RenderFieldFor(s => s.Number4, true).Width(100),
+                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderFir").Width(50),
+                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderSec").Width(50),
+                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderThrid").Width(50)
             )
             .PageItems(
                 F.ToolbarSeparator(),
                 F.ToolbarText().Text("每页记录数："),
                 F.DropDownList().ID("ddlGridPageSize").Width(80).SelectedValue("20")
                     .Items(F.ListItem().Text("10").Value("10"), F.ListItem().Text("20").Value("20"), F.ListItem().Text("50").Value("50"), F.ListItem().Text("100").Value("100"))
-                    .OnSelectedIndexChanged(Url.Action("BindGrid"), "panel1")
+                    .OnSelectedIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
             )
         )
-          )
 }
 
 @section script
-{       
+{
     <script src="~/res/js/GridHelp.js"></script>
     <script>
-        function CbAllCheck(event) {
-            var grid = F.ui.Gird1;            
-            grid.deselectAllRows();
+        function renderFir(value, params) {
+            return renderAction('info','明细');
         }
+        function renderSec(value, params) {
+            return renderAction('edit', '编辑');
+        }
+        function renderThrid(value, params) {
+            return renderAction('delete', '删除');
+        }        
+
     </script>
 }

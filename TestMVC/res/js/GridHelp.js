@@ -50,10 +50,7 @@ function getGridConfig(gridId) {
     };
     return F.toJSON(ret);
 };
-
-
 function selectAll(gridId) {
     var grid = F(gridId);
     grid.deselectAllRows();
-    alert('123');
 };

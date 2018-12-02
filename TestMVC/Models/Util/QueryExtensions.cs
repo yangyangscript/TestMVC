@@ -63,7 +63,6 @@ namespace TestMVC.Models
             return source.Provider.CreateQuery<T>(methodCallExpression);
         }
 
-
         // http://fineui.com/bbs/forum.php?mod=viewthread&tid=3844
         public enum EOrderType
         {
