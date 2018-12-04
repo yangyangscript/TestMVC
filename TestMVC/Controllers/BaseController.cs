@@ -578,7 +578,7 @@ namespace TestMVC.Controllers
 
         protected void BindGird<T>(IQueryable<T> q,string gird,JObject gridItem)
         {
-            var grid1UI = UIHelper.Grid("Grid1");
+            var grid1UI = UIHelper.Grid(gird);
             var gridItemC = gridItem.ToObject<ViewModel.GridConfig>();
             if (gridItemC.IsPaging)
             {

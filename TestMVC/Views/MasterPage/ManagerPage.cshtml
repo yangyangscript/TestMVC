@@ -10,9 +10,14 @@
 }
 
 @section head
-{    
-    <style>       
-        .marginr {
+{
+    <style>
+        .whereItem {
+            margin-top: 0px;
+            margin-left: 28px;
+            width: 245px;
+        }
+        .whereButton {
             margin-top: -3px;
             margin-left: 28px;
         }
@@ -23,26 +28,46 @@
 
 @section body
 {
-    @F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).BoxConfigPadding(5).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
-        F.Form().ID("whereForm").ShowBorder(false).ShowHeader(false).MarginTop(5).MessageTarget(MessageTarget.Qtip).Items(
+    @F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
+        F.Form().ID("whereForm1").ShowBorder(false).ShowHeader(false).Margin("5 0 -10 0").MessageTarget(MessageTarget.Qtip).Items(
             F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-
-                F.TextBox().Label("一行一列").LabelWidth(nameWith).CssClass("marginr").ID("t11").Width(itemWith),
-                F.TextBox().Label("一行二列").LabelWidth(nameWith).CssClass("marginr").ID("t12").Width(itemWith),
-                F.TextBox().Label("一行三列").LabelWidth(nameWith).CssClass("marginr").ID("t13").Width(itemWith),
-                F.DropDownList().Label("一行四列").ID("t11").LabelWidth(nameWith).Width(itemWith).CssClass("marginr").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
+                F.TextBox().Label("一行一列").CssClass("whereItem").ID("t11"),
+                F.TextBox().Label("一行二列").CssClass("whereItem").ID("t12"),
+                F.DropDownList().Label("一行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
                 ),
             F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.TextBox().Label("二行一列").LabelWidth(nameWith).CssClass("marginr").ID("t21").Width(itemWith),
-                F.TextBox().Label("二行二列").LabelWidth(nameWith).CssClass("marginr").ID("t22").Width(itemWith),
-                F.TextBox().Label("二行三列").LabelWidth(nameWith).CssClass("marginr").ID("t23").Width(itemWith),
-                F.DatePicker().Label("二行四列").LabelWidth(nameWith).CssClass("marginr").ID("t24").Width(itemWith),
-
-                F.Button().CssClass("marginr").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                F.TextBox().Label("二行一列").CssClass("whereItem").ID("t21"),
+                F.TextBox().Label("二行二列").CssClass("whereItem").ID("t22"),
+                F.DatePicker().Label("二行四列").CssClass("whereItem").ID("t24")
+                ),
+            F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                F.TextBox().Label("三行一列").CssClass("whereItem").ID("t31"),
+                F.TextBox().Label("三行二列").CssClass("whereItem").ID("t32"),
+                F.DatePicker().Label("三行四列").CssClass("whereItem").ID("t24"),
+                F.Button().CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
                     .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
                 //.Listener("click", "getParams()")
                 )
             ),
+        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).Margin("5 0 -5 0").MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereForm2Collapse").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right	).Items
+            (
+                F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                    F.TextBox().Label("四行一列").CssClass("whereItem").ID("t41"),
+                    F.TextBox().Label("四行二列").CssClass("whereItem").ID("t42"),
+                    F.DropDownList().Label("四行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
+                    ),
+                F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                    F.TextBox().Label("五行一列").CssClass("whereItem").ID("t51"),
+                    F.TextBox().Label("五行二列").CssClass("whereItem").ID("t52"),
+                    F.TextBox().Label("五行三列").CssClass("whereItem").ID("t53")
+                    ),
+                F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                    F.TextBox().Label("六行一列").CssClass("whereItem").ID("t61"),
+                    F.TextBox().Label("六行二列").CssClass("whereItem").ID("t62"),
+                    F.TextBox().Label("六行三列").CssClass("whereItem").ID("t63"),
+                    F.Button().CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                        .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                    )),
         F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("Id")
             .AllowSorting(false).OnSort(Url.Action("BindGrid"), "panel1",new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script)).SortField("CreateTime").SortDirection("DESC")
             .AllowPaging(false).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
@@ -85,7 +110,12 @@
         }
         function renderThrid(value, params) {
             return renderAction('delete', '删除');
-        }        
+        }
+
+
+        function whereForm2Collapse() {
+            
+        }
 
     </script>
 }
