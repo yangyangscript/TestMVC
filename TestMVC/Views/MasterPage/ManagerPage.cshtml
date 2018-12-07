@@ -44,12 +44,12 @@
                 F.TextBox().Label("三行一列").CssClass("whereItem").ID("t31"),
                 F.TextBox().Label("三行二列").CssClass("whereItem").ID("t32"),
                 F.DatePicker().Label("三行四列").CssClass("whereItem").ID("t24"),
-                F.Button().CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                F.Button().ID("btnSearch1").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
                     .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
                 //.Listener("click", "getParams()")
                 )
             ),
-        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).Margin("5 0 -5 0").MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereForm2Collapse").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right	).Items
+        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).Margin("5 0 -5 0").MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereCollapseExpand(false);").Listener("expand", "whereCollapseExpand(true);").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right).Items
             (
                 F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
                     F.TextBox().Label("四行一列").CssClass("whereItem").ID("t41"),
@@ -65,7 +65,7 @@
                     F.TextBox().Label("六行一列").CssClass("whereItem").ID("t61"),
                     F.TextBox().Label("六行二列").CssClass("whereItem").ID("t62"),
                     F.TextBox().Label("六行三列").CssClass("whereItem").ID("t63"),
-                    F.Button().CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                    F.Button().ID("btnSearch2").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
                         .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
                     )),
         F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("Id")
@@ -111,11 +111,5 @@
         function renderThrid(value, params) {
             return renderAction('delete', '删除');
         }
-
-
-        function whereForm2Collapse() {
-            
-        }
-
     </script>
 }

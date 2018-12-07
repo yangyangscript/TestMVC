@@ -59,7 +59,26 @@ namespace TestMVC.Models
                             NavigateUrl = "~/MasterPage/ManagerPage",
                             ImageUrl = "~/res/icon/tag_blue.png",
                         },
+                    },
+                },
+                new Menu()
+                {
+                    Name = "模板模块",
+                    SortIndex = 0,
+                    Remark = "顶级菜单",
+                    ImageUrl = "~/res/icon/cog.png",
+                    Children = new List<Menu>()
+                    {
+                        new Menu()
+                        {
+                            Name = "通用查询加列表",
+                            SortIndex = 100,
+                            Remark = "二级菜单",
+                            NavigateUrl = "~/MasterPage/ManagerPage",
+                            ImageUrl = "~/res/icon/tag_blue.png"
+                        }
                     }
+
                 },
                 new Menu
                 {

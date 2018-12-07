@@ -37,6 +37,8 @@ function renderAction(keyStr,titleStr) {
     if (iconStr == "") return "";
     return F.formatString('<a class="action-btn {0}" href="javascript:;" title="{1}"><img class="f-grid-cell-icon" src="/res/icon/{2}.png"></a>', keyStr, titleStr, iconStr);
 };
+
+//获取列表基本信息
 function getGridConfig(gridId) {
     var gird = F(gridId);
     var ret = {
@@ -50,7 +52,15 @@ function getGridConfig(gridId) {
     };
     return F.toJSON(ret);
 };
+
+//选择全部
 function selectAll(gridId) {
     var grid = F(gridId);
     grid.deselectAllRows();
 };
+
+
+function whereCollapseExpand(isExpand) {
+    F(btnSearch1).setHidden(isExpand);
+    F(btnSearch2).setHidden(!isExpand);
+}
