@@ -13,12 +13,11 @@
 {
     <style>
         .whereItem {
-            margin-top: 0px;
             margin-left: 28px;
             width: 245px;
         }
         .whereButton {
-            margin-top: -3px;
+            
             margin-left: 28px;
         }
     </style>
@@ -29,7 +28,7 @@
 @section body
 {
     @F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
-        F.Form().ID("whereForm1").ShowBorder(false).ShowHeader(false).Margin("5 0 -10 0").MessageTarget(MessageTarget.Qtip).Items(
+        F.Form().ID("whereForm1").ShowBorder(false).ShowHeader(false).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).Items(
             F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
                 F.TextBox().Label("一行一列").CssClass("whereItem").ID("t11"),
                 F.TextBox().Label("一行二列").CssClass("whereItem").ID("t12"),
@@ -49,7 +48,7 @@
                 //.Listener("click", "getParams()")
                 )
             ),
-        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).Margin("5 0 -5 0").MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereCollapseExpand(false);").Listener("expand", "whereCollapseExpand(true);").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right).Items
+        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereCollapseExpand(false);").Listener("expand", "whereCollapseExpand(true);").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right).Items
             (
                 F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
                     F.TextBox().Label("四行一列").CssClass("whereItem").ID("t41"),
