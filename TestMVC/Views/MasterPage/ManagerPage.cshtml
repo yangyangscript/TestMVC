@@ -16,8 +16,8 @@
             margin-left: 28px;
             width: 245px;
         }
+
         .whereButton {
-            
             margin-left: 28px;
         }
     </style>
@@ -27,74 +27,89 @@
 
 @section body
 {
-    @F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
-        F.Form().ID("whereForm1").ShowBorder(false).ShowHeader(false).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).Items(
-            F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.TextBox().Label("一行一列").CssClass("whereItem").ID("t11"),
-                F.TextBox().Label("一行二列").CssClass("whereItem").ID("t12"),
-                F.DropDownList().Label("一行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
-                ),
-            F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.TextBox().Label("二行一列").CssClass("whereItem").ID("t21"),
-                F.TextBox().Label("二行二列").CssClass("whereItem").ID("t22"),
-                F.DatePicker().Label("二行四列").CssClass("whereItem").ID("t24")
-                ),
-            F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                F.TextBox().Label("三行一列").CssClass("whereItem").ID("t31"),
-                F.TextBox().Label("三行二列").CssClass("whereItem").ID("t32"),
-                F.DatePicker().Label("三行四列").CssClass("whereItem").ID("t24"),
-                F.Button().ID("btnSearch1").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
-                    .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
-                //.Listener("click", "getParams()")
+    @(
+            F.Panel().IsViewPort(true).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).BoxConfigPosition(BoxLayoutPosition.Start).Items(
+                F.Form().ID("whereForm1").ShowBorder(false).ShowHeader(false).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).Items(
+                    F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                        F.TextBox().Label("一行一列").CssClass("whereItem").ID("t11"),
+                        F.TextBox().Label("一行二列").CssClass("whereItem").ID("t12"),
+                        F.DropDownList().Label("一行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
+                        ),
+                    F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                        F.TextBox().Label("二行一列").CssClass("whereItem").ID("t21"),
+                        F.TextBox().Label("二行二列").CssClass("whereItem").ID("t22"),
+                        F.DatePicker().Label("二行四列").CssClass("whereItem").ID("t24")
+                        ),
+                    F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                        F.TextBox().Label("三行一列").CssClass("whereItem").ID("t31"),
+                        F.TextBox().Label("三行二列").CssClass("whereItem").ID("t32"),
+                        F.DatePicker().Label("三行四列").CssClass("whereItem").ID("t24"),
+                        F.Button().ID("btnSearch1").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                            .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                        //.Listener("click", "getParams()")
+                        )
+                    ),
+                F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereCollapseExpand(false);").Listener("expand", "whereCollapseExpand(true);").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right).Items
+                    (
+                        F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                            F.TextBox().Label("四行一列").CssClass("whereItem").ID("t41"),
+                            F.TextBox().Label("四行二列").CssClass("whereItem").ID("t42"),
+                            F.DropDownList().Label("四行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
+                            ),
+                        F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                            F.TextBox().Label("五行一列").CssClass("whereItem").ID("t51"),
+                            F.TextBox().Label("五行二列").CssClass("whereItem").ID("t52"),
+                            F.TextBox().Label("五行三列").CssClass("whereItem").ID("t53")
+                            ),
+                        F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
+                            F.TextBox().Label("六行一列").CssClass("whereItem").ID("t61"),
+                            F.TextBox().Label("六行二列").CssClass("whereItem").ID("t62"),
+                            F.TextBox().Label("六行三列").CssClass("whereItem").ID("t63"),
+                            F.Button().ID("btnSearch2").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
+                                .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                            )),
+                F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("Id")
+                    .AllowSorting(false).OnSort(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script)).SortField("CreateTime").SortDirection("DESC")
+                    .AllowPaging(false).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                    .Toolbars(F.Toolbar().Items(
+                        F.CheckBox().Text("全部数据").CssStyle("margin-left: 2px;").Width(80).Listener("change", "selectAll('Gird1');"),
+                        F.ToolbarFill(),
+                        F.Button().Icon(Icon.PageExcel).Text("导出选中")
+                            .Listener("click", "btnToExcel")
+                            .OnClick(e =>
+                            {
+                                e.AjaxLoadingType = AjaxLoadingType.Mask;
+                                e.ShowAjaxLoadingMaskText = true;
+                                e.AjaxLoadingMaskText = "正在导出，请稍后......";
+                            })
+                        ))
+                    .Columns(
+                        F.RowNumberField().EnablePagingNumber(true),
+                        F.RenderFieldFor(s => s.Name1, true).Width(150),
+                        F.RenderFieldFor(s => s.Name2, true).Width(120),
+                        F.RenderFieldFor(s => s.Name3, true).Width(120),
+                        F.RenderFieldFor(s => s.Name4, true).Width(150),
+                        F.RenderFieldFor(s => s.Number1, true).Width(100),
+                        F.RenderFieldFor(s => s.Number2, true).Width(100),
+                        F.RenderFieldFor(s => s.Number3, true).Width(100),
+                        F.RenderFieldFor(s => s.Number4, true).Width(100),
+                        F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderFir").Width(50),
+                        F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderSec").Width(50),
+                        F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderThrid").Width(50)
+                    )
+                    .PageItems(
+                        F.ToolbarSeparator(),
+                        F.ToolbarText().Text("每页记录数："),
+                        F.DropDownList().ID("ddlGridPageSize").Width(80).SelectedValue("20")
+                            .Items(F.ListItem().Text("10").Value("10"), F.ListItem().Text("20").Value("20"), F.ListItem().Text("50").Value("50"), F.ListItem().Text("100").Value("100"))
+                            .OnSelectedIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
+                    )
                 )
-            ),
-        F.Form().ID("whereForm2").ShowBorder(false).ShowHeader(true).BodyPadding(5).MarginBottom(-10).MessageTarget(MessageTarget.Qtip).EnableCollapse(true).Collapsed(true).Listener("collapse", "whereCollapseExpand(false);").Listener("expand", "whereCollapseExpand(true);").Title("更多条件请点击这里小箭头→").TitleAlign(TextAlign.Right).Items
-            (
-                F.Panel().ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                    F.TextBox().Label("四行一列").CssClass("whereItem").ID("t41"),
-                    F.TextBox().Label("四行二列").CssClass("whereItem").ID("t42"),
-                    F.DropDownList().Label("四行四列").ID("t11").CssClass("whereItem").EnableSimulateTree(true).DataTextField("text").DataValueField("value").DataSimulateTreeLevelField("level")
-                    ),
-                F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                    F.TextBox().Label("五行一列").CssClass("whereItem").ID("t51"),
-                    F.TextBox().Label("五行二列").CssClass("whereItem").ID("t52"),
-                    F.TextBox().Label("五行三列").CssClass("whereItem").ID("t53")
-                    ),
-                F.Panel().CssClass("formitem").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Column).Items(
-                    F.TextBox().Label("六行一列").CssClass("whereItem").ID("t61"),
-                    F.TextBox().Label("六行二列").CssClass("whereItem").ID("t62"),
-                    F.TextBox().Label("六行三列").CssClass("whereItem").ID("t63"),
-                    F.Button().ID("btnSearch2").CssClass("whereButton").Text("按条件查询").Icon(Icon.SystemSearch).ValidateForms("whereForm").Type(ButtonType.Submit)
-                        .OnClick(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
-                    )),
-        F.Grid().ID("Gird1").BoxFlex(1).ShowBorder(true).ShowHeader(false).EnableCheckBoxSelect(true).DataIDField("Id")
-            .AllowSorting(false).OnSort(Url.Action("BindGrid"), "panel1",new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script)).SortField("CreateTime").SortDirection("DESC")
-            .AllowPaging(false).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
-            .Toolbars(F.Toolbar().Items(
-                F.CheckBox().Text("全部数据").CssStyle("margin-left: 2px;").Width(80).Listener("change", "selectAll('Gird1');")
-                ))
-            .Columns(
-                F.RowNumberField().EnablePagingNumber(true),
-                F.RenderFieldFor(s => s.Name1, true).Width(150),
-                F.RenderFieldFor(s => s.Name2, true).Width(120),
-                F.RenderFieldFor(s => s.Name3, true).Width(120),
-                F.RenderFieldFor(s => s.Name4, true).Width(150),
-                F.RenderFieldFor(s => s.Number1,true).Width(100),
-                F.RenderFieldFor(s => s.Number2, true).Width(100),
-                F.RenderFieldFor(s => s.Number3, true).Width(100),
-                F.RenderFieldFor(s => s.Number4, true).Width(100),
-                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderFir").Width(50),
-                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderSec").Width(50),
-                F.RenderField().EnableHeaderMenu(false).EnableColumnHide(false).RendererFunction("renderThrid").Width(50)
-            )
-            .PageItems(
-                F.ToolbarSeparator(),
-                F.ToolbarText().Text("每页记录数："),
-                F.DropDownList().ID("ddlGridPageSize").Width(80).SelectedValue("20")
-                    .Items(F.ListItem().Text("10").Value("10"), F.ListItem().Text("20").Value("20"), F.ListItem().Text("50").Value("50"), F.ListItem().Text("100").Value("100"))
-                    .OnSelectedIndexChanged(Url.Action("BindGrid"), "panel1", new Parameter("girdItems", "getGridConfig('Gird1')", ParameterMode.Script))
-            )
-        )
+    )
+    @using (Html.BeginForm("ExportToExcel", "MasterPage", FormMethod.Post, new { id = "excelform" }))
+    {
+        <input type="hidden" name="excelParams" />
+    }
 }
 
 @section script
@@ -102,13 +117,19 @@
     <script src="~/res/js/GridHelp.js"></script>
     <script>
         function renderFir(value, params) {
-            return renderAction('info','明细');
+            return renderAction('info', '明细');
         }
         function renderSec(value, params) {
             return renderAction('edit', '编辑');
         }
         function renderThrid(value, params) {
             return renderAction('delete', '删除');
+        }
+
+        function btnToExcel(event) {
+            var myform = $('#excelform');
+            myform.find('[name=excelParams]').val(getGridConfig('Gird1'));
+            myform[0].submit();
         }
     </script>
 }

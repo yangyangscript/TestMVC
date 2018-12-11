@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using FineUIMvc;
@@ -24,5 +25,14 @@ namespace TestMVC.Controllers
 
             return UIHelper.Result();
         }
+
+        [HttpPost]
+        public ActionResult ExportToExcel(JObject girdItems)
+        {  
+            var bitys =new byte[8];
+            return File(bitys, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "审车数据导出.xlsx");
+        }
+
     }
 }
