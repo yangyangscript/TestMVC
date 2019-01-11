@@ -79,7 +79,8 @@
 
 
 @section script {
-    <script src="~/res/js/GridHelp.js"></script>
+    @*<script src="~/res/js/GridHelp.js"></script>*@         
+    @Scripts.Render("~/bundles/Grid")
     <script>
 
     var coreUserEdit = @Convert.ToString(ViewBag.CoreUserEdit).ToLower();                                                      

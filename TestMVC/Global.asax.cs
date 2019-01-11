@@ -22,6 +22,7 @@ namespace TestMVC
             ModelBinders.Binders.Add(typeof(JArray), new JArrayModelBinder());
             ModelBinders.Binders.Add(typeof(JObject), new JObjectModelBinder());
 
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             Database.SetInitializer(new TestMVC.Models.AppBoxMvcDatabaseInitializer());
         }
