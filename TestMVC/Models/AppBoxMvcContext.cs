@@ -24,6 +24,10 @@ namespace TestMVC.Models
         public DbSet<Power> Powers { get; set; }
         public DbSet<Menu> Menus { get; set; }
 
+        public DbSet<LoginRecord> LoginRecords { get; set; }
+
+        public DbSet<OpreateRecord> OpreateRecords { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

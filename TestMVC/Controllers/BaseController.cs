@@ -8,13 +8,28 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Data.Entity;
 using Newtonsoft.Json.Linq;
+using NLog;
 using TestMVC.Models;
 
 namespace TestMVC.Controllers
 {
     public class BaseController : Controller
     {
-        protected AppBoxMvcContext db = new AppBoxMvcContext();
+        protected AppBoxMvcContext db = new AppBoxMvcContext();     
+
+        protected void OpreateLogger(string str1,string str2)
+        {
+            var loginer = LogManager.GetLogger("opreater");
+            LogEventInfo lei = new LogEventInfo();
+
+            lei.Properties["cName"] = ControllerContext.RouteData.GetRequiredString("Controller");
+            lei.Properties["userId"] = 1;
+            lei.Properties["mesFir"] = GetIdentityName();
+            lei.Properties["mesSec"] = str2;
+            lei.Level = LogLevel.Info;
+            loginer.Log(lei);
+        }
+
 
         #region 只读静态变量
 
@@ -47,7 +62,7 @@ namespace TestMVC.Controllers
 
         #region ShowNotify
 
-        /// <summary>
+        /// <summary>stsc没听说
         /// 显示通知对话框
         /// </summary>
         /// <param name="message"></param>

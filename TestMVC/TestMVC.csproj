@@ -53,6 +53,7 @@
     <Reference Include="FineUIMvc, Version=1.2.0.0, Culture=neutral, PublicKeyToken=2317dd1e500693f3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\FineUIMvc.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
@@ -71,6 +72,9 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.8\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.Configuration.Install" />
@@ -78,8 +82,14 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -92,9 +102,14 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
@@ -138,6 +153,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\ParseMaster.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\TestArea\Controllers\TestAreaController.cs" />
+    <Compile Include="Areas\TestArea\TestAreaAreaRegistration.cs" />
     <Compile Include="CommonHelp\GirdConfigHelp.cs" />
     <Compile Include="CommonHelp\StringHelp.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -150,6 +168,7 @@
     <Compile Include="Controllers\MasterPage\1_DefaultPage.cs" />
     <Compile Include="Controllers\MasterPage\3_EditorPage.cs" />
     <Compile Include="Controllers\MasterPage\MasterPageController.cs" />
+    <Compile Include="Controllers\Test1234Controller.cs" />
     <Compile Include="Controllers\UploadTestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -160,6 +179,8 @@
     <Compile Include="Models\Dept.cs" />
     <Compile Include="Models\CheckPowerAttribute.cs" />
     <Compile Include="Models\GroupPowerViewModel.cs" />
+    <Compile Include="Models\LoginRecord.cs" />
+    <Compile Include="Models\OpreateRecord.cs" />
     <Compile Include="Models\PagingInfoViewModel.cs" />
     <Compile Include="Models\Helper\ConfigHelper.cs" />
     <Compile Include="Models\Helper\DeptHelper.cs" />
@@ -1979,10 +2000,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\TestArea\Models\" />
     <Folder Include="res\themes\baidu_images\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="res\images\logo\logo.psd" />
@@ -2119,6 +2143,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\MasterPage\ManagerPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\TestArea\Views\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\TestArea\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\TestArea\Views\TestArea\Test123.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

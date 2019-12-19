@@ -1,0 +1,17 @@
+﻿@using FineUIMvc
+@{
+    ViewBag.Title = "登录";
+    var F = @Html.F();
+}
+
+@section body
+{
+    @(
+        F.Panel().Items(
+            F.Label().Text("1231231231231"),
+            F.Button().Text("TestControllerName").OnClick(Url.Action("TestControllerName")),
+            F.Button().Text("nlogTest").OnClick(Url.Action("NlogTest")),
+            F.Button().Text("OpreateTest").OnClick(Url.Action("OpreatTest"))
+            )
+     )
+}
